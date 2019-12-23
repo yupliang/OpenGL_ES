@@ -6,10 +6,15 @@
 //  Copyright © 2019 Beta Technology. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#define GLES_SILENCE_DEPRECATION
 
-@interface ViewController : UIViewController
+#import <GLKit/GLKit.h>
 
+@interface ViewController : GLKViewController {
+    GLuint vertexBufferID;
+}
+
+@property (strong, nonatomic) GLKBaseEffect *baseEffect;
 
 @end
 

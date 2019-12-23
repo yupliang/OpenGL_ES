@@ -15,6 +15,7 @@
 		FD28011F23ACCA8100B75551 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FD28011D23ACCA8100B75551 /* LaunchScreen.storyboard */; };
 		FD28012223ACCA8100B75551 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FD28012123ACCA8100B75551 /* main.m */; };
 		FD28012C23ACCA8100B75551 /* TestOpenGLESUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = FD28012B23ACCA8100B75551 /* TestOpenGLESUITests.m */; };
+		FD28013723B0D29900B75551 /* Common_Icon_Insightflower.png in Resources */ = {isa = PBXBuildFile; fileRef = FD28013623B0D29900B75551 /* Common_Icon_Insightflower.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +44,7 @@
 		FD28012723ACCA8100B75551 /* TestOpenGLESUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TestOpenGLESUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD28012B23ACCA8100B75551 /* TestOpenGLESUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestOpenGLESUITests.m; sourceTree = "<group>"; };
 		FD28012D23ACCA8100B75551 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FD28013623B0D29900B75551 /* Common_Icon_Insightflower.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Common_Icon_Insightflower.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +86,7 @@
 		FD28010E23ACCA7E00B75551 /* TestOpenGLES */ = {
 			isa = PBXGroup;
 			children = (
+				FD28013623B0D29900B75551 /* Common_Icon_Insightflower.png */,
 				FD28010F23ACCA7E00B75551 /* AppDelegate.h */,
 				FD28011023ACCA7E00B75551 /* AppDelegate.m */,
 				FD28011223ACCA7E00B75551 /* SceneDelegate.h */,
@@ -189,6 +192,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FD28011F23ACCA8100B75551 /* LaunchScreen.storyboard in Resources */,
+				FD28013723B0D29900B75551 /* Common_Icon_Insightflower.png in Resources */,
 				FD28011C23ACCA8100B75551 /* Assets.xcassets in Resources */,
 				FD28011A23ACCA7E00B75551 /* Main.storyboard in Resources */,
 			);
@@ -369,6 +373,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = G266G4297P;
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				INFOPLIST_FILE = TestOpenGLES/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -386,6 +391,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = G266G4297P;
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
 				INFOPLIST_FILE = TestOpenGLES/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
