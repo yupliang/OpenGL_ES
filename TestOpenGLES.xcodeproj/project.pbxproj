@@ -29,6 +29,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		FD1A988F23B1932A00873833 /* AGLKVertexAttribArrayBuffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AGLKVertexAttribArrayBuffer.h; sourceTree = "<group>"; };
+		FD1A989023B1932A00873833 /* AGLKVertexAttribArrayBuffer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AGLKVertexAttribArrayBuffer.m; sourceTree = "<group>"; };
 		FD28010C23ACCA7E00B75551 /* TestOpenGLES.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestOpenGLES.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD28010F23ACCA7E00B75551 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		FD28011023ACCA7E00B75551 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -98,6 +100,8 @@
 				FD28011D23ACCA8100B75551 /* LaunchScreen.storyboard */,
 				FD28012023ACCA8100B75551 /* Info.plist */,
 				FD28012123ACCA8100B75551 /* main.m */,
+				FD1A988F23B1932A00873833 /* AGLKVertexAttribArrayBuffer.h */,
+				FD1A989023B1932A00873833 /* AGLKVertexAttribArrayBuffer.m */,
 			);
 			path = TestOpenGLES;
 			sourceTree = "<group>";

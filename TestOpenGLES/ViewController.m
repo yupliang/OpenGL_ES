@@ -43,6 +43,10 @@ static const SceneVertex vertices[] = {
     glBindBuffer(GL_ARRAY_BUFFER, vertexBufferID);//2
     NSLog(@"sizeof float %d", sizeof(float));
     NSLog(@"sizeof vertices %d", sizeof(vertices));
+    NSLog(@"sizeof SceneVertex %d", sizeof(SceneVertex));
+    NSLog(@"offsetof(SceneVertex, textureCoords) %d", offsetof(SceneVertex, textureCoords));
+    NSLog(@"offsetof(SceneVertex, positionCoords) %d", offsetof(SceneVertex, positionCoords));
+    NSLog(@"sizeof(vertices)/sizeof(SceneVertex) %d", sizeof(vertices)/sizeof(SceneVertex));
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);//3
     
     //Setup texture
@@ -52,13 +56,25 @@ static const SceneVertex vertices[] = {
     self.baseEffect.texture2d0.target = textureInfo.target;
 }
 
+/*
+ - (void)preparetoDrawWithAttrib:(GLuint)index
+             numberOfCoordinates:(GLint)count
+                    attribOffset:(GLsizeptr)offset
+                    shouldEnable:(BOOL)shouldEnable {
+     glVertexAttribPointer(index,count,GL_FlOAT,GL_FALSE,stride,NULL+offset);
+ }
+ */
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect {
     [self.baseEffect prepareToDraw];
     
     glClear(GL_COLOR_BUFFER_BIT);
     
     glEnableVertexAttribArray(GLKVertexAttribPosition);//4
-    glVertexAttribPointer(GLKVertexAttribPosition, 3, GL_FLOAT, GL_FALSE, sizeof(SceneVertex), NULL);//5
+    glVertexAttribPointer(GLKVertexAttribPosition, 3, GL_FLOAT, GL_FALSE, sizeof(SceneVertex), NULL+offsetof(SceneVertex, positionCoords));//5
+    
+    glEnableVertexAttribArray(GLKVertexAttribTexCoord0);
+  glVertexAttribPointer(GLKVertexAttribTexCoord0,2,GL_FLOAT,GL_FALSE,sizeof(SceneVertex),NULL+offsetof(SceneVertex, textureCoords));
+    
     glDrawArrays(GL_TRIANGLES, 0, 3);//6
 }
 
