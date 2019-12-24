@@ -14,9 +14,9 @@ typedef struct {
 } SceneVertex;
 
 static const SceneVertex vertices[] = {
-    {{-0.5f,-0.5f,0.0}},{0.0f,0.0f},
-    {{0.5f,-0.5f,0.0}},{1.0f,0.0f},
-    {{-0.5f,0.5f,0.0}},{0.0f,1.0f}
+    {{-0.5f,-0.5f,0.0},{0.0f,0.0f}},
+    {{0.5f,-0.5f,0.0},{1.0f,0.0f}},
+    {{-0.5f,0.5f,0.0},{0.0f,1.0f}}
 };
 
 @interface ViewController ()
@@ -39,6 +39,21 @@ static const SceneVertex vertices[] = {
     
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     
+    /*
+     - (id)initWithAttriStride:(GLSizeptr)aStride
+             numberOfVertices:(GLSize)count
+                          data:(const GLvoid *)dataPtr
+                        usage:(GLenum)usage {
+        stride = aStride;
+        bufferSizeBytes = stride * count;
+        glGenBuffers(1,&glName);//1
+        glBindBuffer(GL_ARRAY_BUFFER,self.glName);//2
+        glBufferData(GL_ARRAY_BUFFER,
+                     bufferSizeBytes,
+                     dataPtr,
+                     usage);//3
+    }*/
+    
     glGenBuffers(1, &vertexBufferID);//1
     glBindBuffer(GL_ARRAY_BUFFER, vertexBufferID);//2
     NSLog(@"sizeof float %d", sizeof(float));
@@ -47,6 +62,8 @@ static const SceneVertex vertices[] = {
     NSLog(@"offsetof(SceneVertex, textureCoords) %d", offsetof(SceneVertex, textureCoords));
     NSLog(@"offsetof(SceneVertex, positionCoords) %d", offsetof(SceneVertex, positionCoords));
     NSLog(@"sizeof(vertices)/sizeof(SceneVertex) %d", sizeof(vertices)/sizeof(SceneVertex));
+//    NSLog(@"GLKVector3 %d", sizeof(GLKVector3));
+//    NSLog(@"GLKVector2 %d", sizeof(GLKVector2));
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);//3
     
     //Setup texture
@@ -54,6 +71,7 @@ static const SceneVertex vertices[] = {
     GLKTextureInfo *textureInfo = [GLKTextureLoader textureWithCGImage:imageref options:nil error:NULL];
     self.baseEffect.texture2d0.name = textureInfo.name;
     self.baseEffect.texture2d0.target = textureInfo.target;
+    NSLog(@"textureInfo name %d", textureInfo.name);
 }
 
 /*
@@ -70,7 +88,12 @@ static const SceneVertex vertices[] = {
     glClear(GL_COLOR_BUFFER_BIT);
     
     glEnableVertexAttribArray(GLKVertexAttribPosition);//4
-    glVertexAttribPointer(GLKVertexAttribPosition, 3, GL_FLOAT, GL_FALSE, sizeof(SceneVertex), NULL+offsetof(SceneVertex, positionCoords));//5
+    glVertexAttribPointer(GLKVertexAttribPosition,
+                          3,
+                          GL_FLOAT,
+                          GL_FALSE,
+                          sizeof(SceneVertex),
+                          NULL+offsetof(SceneVertex, positionCoords));//5
     
     glEnableVertexAttribArray(GLKVertexAttribTexCoord0);
   glVertexAttribPointer(GLKVertexAttribTexCoord0,2,GL_FLOAT,GL_FALSE,sizeof(SceneVertex),NULL+offsetof(SceneVertex, textureCoords));
