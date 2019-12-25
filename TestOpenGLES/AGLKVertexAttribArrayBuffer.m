@@ -31,4 +31,10 @@
                  usage);//3
 }
 
+- (void)drawArrayWithMode:(GLenum)mode
+         startVertexIndex:(GLint)first
+         numberOfVertices:(GLsizei)count {
+    glDrawArrays(mode, first, count);
+}
+
 @end
