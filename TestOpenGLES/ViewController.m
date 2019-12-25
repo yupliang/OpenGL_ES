@@ -42,7 +42,7 @@ static const SceneVertex vertices[] = {
     self.baseEffect.useConstantColor = GL_TRUE;
     self.baseEffect.constantColor = GLKVector4Make(1.0f, 1.0f, 1.0f, 1.0f);
     
-    glClearColor(0.05f, 0.0f, 0.5f, 1.0f);
+    glClearColor(1.f, 1.0f, 1.f, 1.0f);
     
     /*
      - (id)initWithAttriStride:(GLSizeptr)aStride
@@ -72,25 +72,22 @@ static const SceneVertex vertices[] = {
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);//3
     
     //Setup texture
-    CGImageRef imageref = [[UIImage imageNamed:@"Common_Icon_Insightflower.png"] CGImage];
+    CGImageRef imageref = [[UIImage imageNamed:@"leaves.gif"] CGImage];
     GLKTextureInfo *textureInfo = [GLKTextureLoader textureWithCGImage:imageref options:@{GLKTextureLoaderOriginBottomLeft:@(true)} error:NULL];
     self.textureInfo0 = textureInfo;
     
     CGImageRef imageRef1 = [[UIImage imageNamed:@"beetle.png"] CGImage];
     self.textureInfo1 = [GLKTextureLoader textureWithCGImage:imageRef1 options:@{GLKTextureLoaderOriginBottomLeft:@(YES)} error:nil];
     
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+//    glEnable(GL_BLEND);
+//    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    self.baseEffect.texture2d0.name = self.textureInfo0.name;
+    self.baseEffect.texture2d0.target = self.textureInfo0.target;
+    self.baseEffect.texture2d1.name = self.textureInfo1.name;
+    self.baseEffect.texture2d1.target = self.textureInfo1.target;
+    self.baseEffect.texture2d1.envMode = GLKTextureEnvModeDecal;
     
-    glEnableVertexAttribArray(GLKVertexAttribPosition);//4
-    glVertexAttribPointer(GLKVertexAttribPosition,
-                          3,
-                          GL_FLOAT,
-                          GL_FALSE,
-                          sizeof(SceneVertex),
-                          NULL+offsetof(SceneVertex, positionCoords));//5
-    glEnableVertexAttribArray(GLKVertexAttribTexCoord0);
-    glVertexAttribPointer(GLKVertexAttribTexCoord0,2,GL_FLOAT,GL_FALSE,sizeof(SceneVertex),NULL+offsetof(SceneVertex, textureCoords));
+    
 }
 
 /*
@@ -111,6 +108,11 @@ static const SceneVertex vertices[] = {
              numberOfCoordinates:(GLint)count
                     attribOffset:(GLsizeptr)offset
                     shouldEnable:(BOOL)shouldEnable {
+     if(shouldEnable)
+     {
+        glEnableVertexAttribArray(     // Step 4
+           index);
+     }
      glVertexAttribPointer(index,count,GL_FlOAT,GL_FALSE,stride,NULL+offset);
  }
  - (void)drawArrayWithMode:(GLenum)mode
@@ -122,13 +124,25 @@ static const SceneVertex vertices[] = {
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect {
     glClear(GL_COLOR_BUFFER_BIT);
     
-    self.baseEffect.texture2d0.name = self.textureInfo0.name;
-    self.baseEffect.texture2d0.target = self.textureInfo0.target;
-    [self.baseEffect prepareToDraw];
-    glDrawArrays(GL_TRIANGLES, 0, 6);//6
-//
-    self.baseEffect.texture2d0.name = self.textureInfo1.name;
-    self.baseEffect.texture2d0.target = self.textureInfo1.target;
+
+//    [self.baseEffect prepareToDraw];
+//    glDrawArrays(GL_TRIANGLES, 0, 6);//6
+    
+    glEnableVertexAttribArray(GLKVertexAttribPosition);//4
+    glEnableVertexAttribArray(GLKVertexAttribTexCoord0);
+    glEnableVertexAttribArray(GLKVertexAttribTexCoord1);
+    
+    glVertexAttribPointer(GLKVertexAttribPosition,
+                          3,
+                          GL_FLOAT,
+                          GL_FALSE,
+                          sizeof(SceneVertex),
+                          NULL+offsetof(SceneVertex, positionCoords));//5
+    
+    glVertexAttribPointer(GLKVertexAttribTexCoord0,2,GL_FLOAT,GL_FALSE,sizeof(SceneVertex),NULL+offsetof(SceneVertex, textureCoords));
+    
+    glVertexAttribPointer(GLKVertexAttribTexCoord1,2,GL_FLOAT,GL_FALSE,sizeof(SceneVertex),NULL+offsetof(SceneVertex, textureCoords));
+    
     [self.baseEffect prepareToDraw];
     glDrawArrays(GL_TRIANGLES, 0, 6);//6
 }
