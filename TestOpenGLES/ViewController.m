@@ -76,7 +76,7 @@ static const SceneVertex vertices[] = {
     GLKTextureInfo *textureInfo = [GLKTextureLoader textureWithCGImage:imageref options:@{GLKTextureLoaderOriginBottomLeft:@(true)} error:NULL];
     self.textureInfo0 = textureInfo;
     
-    CGImageRef imageRef1 = [[UIImage imageNamed:@"icon_1_3_map.png"] CGImage];
+    CGImageRef imageRef1 = [[UIImage imageNamed:@"beetle.png"] CGImage];
     self.textureInfo1 = [GLKTextureLoader textureWithCGImage:imageRef1 options:@{GLKTextureLoaderOriginBottomLeft:@(YES)} error:nil];
     
     glEnable(GL_BLEND);
