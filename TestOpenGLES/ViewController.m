@@ -63,7 +63,7 @@ static SceneTriangle SceneTriangleMake(
     
     triangles[0] = SceneTriangleMake(vertexA, vertexB, vertexD);
     triangles[1] = SceneTriangleMake(vertexB, vertexC, vertexF);
-    triangles[2] = SceneTriangleMake(vertexB, vertexE, vertexD);
+    triangles[2] = SceneTriangleMake(vertexD, vertexB, vertexE);
     triangles[3] = SceneTriangleMake(vertexB, vertexF, vertexE);
     triangles[4] = SceneTriangleMake(vertexD, vertexE, vertexH);
     triangles[5] = SceneTriangleMake(vertexE, vertexF, vertexH);
@@ -138,6 +138,14 @@ static SceneTriangle SceneTriangleMake(
                           GL_FALSE,
                           sizeof(SceneVertex),
                           NULL+offsetof(SceneVertex, positionCoords));//5
+    
+    glEnableVertexAttribArray(GLKVertexAttribNormal);//4
+    glVertexAttribPointer(GLKVertexAttribNormal,
+                          3,
+                          GL_FLOAT,
+                          GL_FALSE,
+                          sizeof(SceneVertex),
+                          NULL+offsetof(SceneVertex, normalVectors));//5
     
     glDrawArrays(GL_TRIANGLES, 0, sizeof(triangles)/sizeof(SceneVertex));//6
 }
