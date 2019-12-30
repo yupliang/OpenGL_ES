@@ -10,23 +10,36 @@
 
 typedef struct {
     GLKVector3 positionCoords;
-    GLKVector2 textureCoords;
+    GLKVector3 normalVectors;
 } SceneVertex;
 
-static const SceneVertex vertices[] = {
-    {{-0.5f,-0.5f,0.0},{0.0f,0.0f}},
-    {{0.5f,-0.5f,0.0},{1.0f,0.0f}},
-    {{-0.5f,0.5f,0.0},{0.0f,1.0f}},
-    
-    {{0.5f,-0.5f,0.0},{1.0f,0.0f}},
-    {{-0.5f,0.5f,0.0},{0.0f,1.0f}},
-    {{0.5f,0.5f,0.0},{1.0f,1.0f}},
-};
+SceneVertex vertexA = {{-0.5,0.5,-0.5},{0.0,0.0,1.0}};
+SceneVertex vertexB = {{-0.5,0.0,-0.5},{0.0,0.0,1.0}};
+SceneVertex vertexC = {{-0.5,-0.5,-0.5},{0.0,0.0,1.0}};
+SceneVertex vertexD = {{0.0,0.5,-0.5},{0.0,0.0,1.0}};
+SceneVertex vertexE = {{0.0,0.0,0.0},{0.0,0.0,1.0}};
+SceneVertex vertexF = {{0.0,-0.5,-0.5},{0.0,0.0,1.0}};
+SceneVertex vertexG = {{0.5,0.5,-0.5},{0.0,0.0,1.0}};
+SceneVertex vertexH = {{0.5,0,-0.5},{0.0,0.0,1.0}};
+SceneVertex vertexI = {{-0.5,-0.5,-0.5},{0.0,0.0,1.0}};
+
+typedef struct {
+    SceneVertex vertices[3];
+} SceneTriangle;
+
+
+// Forward function declarations
+static SceneTriangle SceneTriangleMake(
+   const SceneVertex vertexA,
+   const SceneVertex vertexB,
+   const SceneVertex vertexC);
 
 @interface ViewController ()
-@property (nonatomic,strong) GLKTextureInfo* textureInfo0;
-@property (nonatomic,strong) GLKTextureInfo* textureInfo1;
+{
+    SceneTriangle triangles[8];
+}
 @end
+
 
 @implementation ViewController
 
@@ -34,13 +47,28 @@ static const SceneVertex vertices[] = {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+//    if (CheckForExtension(@"GL_IMG_texture_compression_pvrtc")) {
+//        NSLog(@"GL_IMG_texture_compression_pvrtc available");
+//    }
+    
     GLKView *view = (GLKView *)self.view;
     NSAssert([view isKindOfClass:[GLKView class]], @"View controller's view is not a GLKView");
     view.context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
     [EAGLContext setCurrentContext:view.context];
+    
     self.baseEffect = [[GLKBaseEffect alloc] init];
-    self.baseEffect.useConstantColor = GL_TRUE;
-    self.baseEffect.constantColor = GLKVector4Make(1.0f, 1.0f, 1.0f, 1.0f);
+    self.baseEffect.light0.enabled = GL_TRUE;
+    self.baseEffect.light0.diffuseColor = GLKVector4Make(0.7f, 0.7f, 0.7f, 1.0f);
+    self.baseEffect.light0.position = GLKVector4Make(1.0f, 1.0f, 0.5f, 0.0f);//第4个元素是0，表明是一个指向无限远的光源的方向
+    
+    triangles[0] = SceneTriangleMake(vertexA, vertexB, vertexD);
+    triangles[1] = SceneTriangleMake(vertexB, vertexC, vertexF);
+    triangles[2] = SceneTriangleMake(vertexB, vertexE, vertexD);
+    triangles[3] = SceneTriangleMake(vertexB, vertexF, vertexE);
+    triangles[4] = SceneTriangleMake(vertexD, vertexE, vertexH);
+    triangles[5] = SceneTriangleMake(vertexE, vertexF, vertexH);
+    triangles[6] = SceneTriangleMake(vertexD, vertexH, vertexG);
+    triangles[7] = SceneTriangleMake(vertexH, vertexF, vertexI);
     
     glClearColor(1.f, 1.0f, 1.f, 1.0f);
     
@@ -62,32 +90,9 @@ static const SceneVertex vertices[] = {
     glGenBuffers(1, &vertexBufferID);//1
     glBindBuffer(GL_ARRAY_BUFFER, vertexBufferID);//2
     NSLog(@"sizeof float %d", sizeof(float));
-    NSLog(@"sizeof vertices %d", sizeof(vertices));
-//    NSLog(@"sizeof SceneVertex %d", sizeof(SceneVertex));
-//    NSLog(@"offsetof(SceneVertex, textureCoords) %d", offsetof(SceneVertex, textureCoords));
-//    NSLog(@"offsetof(SceneVertex, positionCoords) %d", offsetof(SceneVertex, positionCoords));
-//    NSLog(@"sizeof(vertices)/sizeof(SceneVertex) %d", sizeof(vertices)/sizeof(SceneVertex));
-//    NSLog(@"GLKVector3 %d", sizeof(GLKVector3));
-//    NSLog(@"GLKVector2 %d", sizeof(GLKVector2));
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);//3
-    
-    //Setup texture
-    CGImageRef imageref = [[UIImage imageNamed:@"leaves.gif"] CGImage];
-    GLKTextureInfo *textureInfo = [GLKTextureLoader textureWithCGImage:imageref options:@{GLKTextureLoaderOriginBottomLeft:@(true)} error:NULL];
-    self.textureInfo0 = textureInfo;
-    
-    CGImageRef imageRef1 = [[UIImage imageNamed:@"beetle.png"] CGImage];
-    self.textureInfo1 = [GLKTextureLoader textureWithCGImage:imageRef1 options:@{GLKTextureLoaderOriginBottomLeft:@(YES)} error:nil];
-    
-//    glEnable(GL_BLEND);
-//    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    self.baseEffect.texture2d0.name = self.textureInfo0.name;
-    self.baseEffect.texture2d0.target = self.textureInfo0.target;
-    self.baseEffect.texture2d1.name = self.textureInfo1.name;
-    self.baseEffect.texture2d1.target = self.textureInfo1.target;
-    self.baseEffect.texture2d1.envMode = GLKTextureEnvModeDecal;
-    
-    
+
+
+    glBufferData(GL_ARRAY_BUFFER, sizeof(triangles), triangles, GL_DYNAMIC_DRAW);//3
 }
 
 /*
@@ -122,16 +127,11 @@ static const SceneVertex vertices[] = {
  }
  */
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect {
+    [self.baseEffect prepareToDraw];
     glClear(GL_COLOR_BUFFER_BIT);
-    
-
-//    [self.baseEffect prepareToDraw];
 //    glDrawArrays(GL_TRIANGLES, 0, 6);//6
     
     glEnableVertexAttribArray(GLKVertexAttribPosition);//4
-    glEnableVertexAttribArray(GLKVertexAttribTexCoord0);
-    glEnableVertexAttribArray(GLKVertexAttribTexCoord1);
-    
     glVertexAttribPointer(GLKVertexAttribPosition,
                           3,
                           GL_FLOAT,
@@ -139,12 +139,7 @@ static const SceneVertex vertices[] = {
                           sizeof(SceneVertex),
                           NULL+offsetof(SceneVertex, positionCoords));//5
     
-    glVertexAttribPointer(GLKVertexAttribTexCoord0,2,GL_FLOAT,GL_FALSE,sizeof(SceneVertex),NULL+offsetof(SceneVertex, textureCoords));
-    
-    glVertexAttribPointer(GLKVertexAttribTexCoord1,2,GL_FLOAT,GL_FALSE,sizeof(SceneVertex),NULL+offsetof(SceneVertex, textureCoords));
-    
-    [self.baseEffect prepareToDraw];
-    glDrawArrays(GL_TRIANGLES, 0, 6);//6
+    glDrawArrays(GL_TRIANGLES, 0, sizeof(triangles)/sizeof(SceneVertex));//6
 }
 
 - (void)viewDidUnload {
@@ -163,3 +158,13 @@ static const SceneVertex vertices[] = {
 }
 
 @end
+
+static SceneTriangle SceneTriangleMake(const SceneVertex vertexA, const SceneVertex vertexB, const SceneVertex vertexC) {
+    SceneTriangle result;
+    
+    result.vertices[0] = vertexA;
+    result.vertices[1] = vertexB;
+    result.vertices[2] = vertexC;
+    
+    return result;
+}
