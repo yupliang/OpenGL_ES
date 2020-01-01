@@ -17,7 +17,7 @@ SceneVertex vertexA = {{-0.5,0.5,-0.5},{0.0,0.0,1.0}};
 SceneVertex vertexB = {{-0.5,0.0,-0.5},{0.0,0.0,1.0}};
 SceneVertex vertexC = {{-0.5,-0.5,-0.5},{0.0,0.0,1.0}};
 SceneVertex vertexD = {{0.0,0.5,-0.5},{0.0,0.0,1.0}};
-SceneVertex vertexE = {{0.0,0.0,-0.5},{0.0,0.0,1.0}};
+SceneVertex vertexE = {{0.0,0.0,0},{0.0,0.0,1.0}};
 SceneVertex vertexF = {{0.0,-0.5,-0.5},{0.0,0.0,1.0}};
 SceneVertex vertexG = {{0.5,0.5,-0.5},{0.0,0.0,1.0}};
 SceneVertex vertexH = {{0.5,0,-0.5},{0.0,0.0,1.0}};
@@ -62,19 +62,19 @@ static SceneTriangle SceneTriangleMake(
     self.baseEffect.light0.position = GLKVector4Make(1.0f, 1.0f, 0.5f, 0.0f);//第4个元素是0，表明是一个指向无限远的光源的方向
     
 
-//    {  // Comment out this block to render the scene top down
-//       GLKMatrix4 modelViewMatrix = GLKMatrix4MakeRotation(
-//          GLKMathDegreesToRadians(-60.0f), 1.0f, 0.0f, 0.0f);
-//       modelViewMatrix = GLKMatrix4Rotate(
-//          modelViewMatrix,
-//          GLKMathDegreesToRadians(-30.0f), 0.0f, 0.0f, 1.0f);
-//       modelViewMatrix = GLKMatrix4Translate(
-//          modelViewMatrix,
-//          0.0f, 0.0f, 0.25f);
-//
-//       self.baseEffect.transform.modelviewMatrix = modelViewMatrix;
-////       self.extraEffect.transform.modelviewMatrix = modelViewMatrix;
-//    }
+    {  // Comment out this block to render the scene top down
+       GLKMatrix4 modelViewMatrix = GLKMatrix4MakeRotation(
+          GLKMathDegreesToRadians(-60.0f), 1.0f, 0.0f, 0.0f);
+       modelViewMatrix = GLKMatrix4Rotate(
+          modelViewMatrix,
+          GLKMathDegreesToRadians(-30.0f), 0.0f, 0.0f, 1.0f);
+       modelViewMatrix = GLKMatrix4Translate(
+          modelViewMatrix,
+          0.0f, 0.0f, 0.25f);
+
+       self.baseEffect.transform.modelviewMatrix = modelViewMatrix;
+//       self.extraEffect.transform.modelviewMatrix = modelViewMatrix;
+    }
     
     triangles[0] = SceneTriangleMake(vertexA, vertexB, vertexD);
     triangles[1] = SceneTriangleMake(vertexB, vertexC, vertexF);
@@ -155,13 +155,13 @@ static SceneTriangle SceneTriangleMake(
                           sizeof(SceneVertex),
                           NULL+offsetof(SceneVertex, positionCoords));//5
     
-//    glEnableVertexAttribArray(GLKVertexAttribNormal);//4
-//    glVertexAttribPointer(GLKVertexAttribNormal,
-//                          3,
-//                          GL_FLOAT,
-//                          GL_FALSE,
-//                          sizeof(SceneVertex),
-//                          NULL+offsetof(SceneVertex, normalVectors));//5
+    glEnableVertexAttribArray(GLKVertexAttribNormal);//4
+    glVertexAttribPointer(GLKVertexAttribNormal,
+                          3,
+                          GL_FLOAT,
+                          GL_FALSE,
+                          sizeof(SceneVertex),
+                          NULL+offsetof(SceneVertex, normalVectors));//5
     
     glDrawArrays(GL_TRIANGLES, 0, sizeof(triangles)/sizeof(SceneVertex));//6
 }
@@ -180,6 +180,34 @@ static SceneTriangle SceneTriangleMake(
     view.context = nil;
     [EAGLContext setCurrentContext:nil];
 }
+
+/////////////////////////////////////////////////////////////////
+// This method sets the value of centerVertexHeight and updates
+// vertex normals
+- (void)setCenterVertexHeight:(GLfloat)aValue
+{
+    NSLog(@"value changed from %f to %f", _centerVertexHeight, aValue);
+   _centerVertexHeight = aValue;
+   
+    SceneVertex newVertexE = vertexE;
+    newVertexE.positionCoords.z = self.centerVertexHeight;
+    triangles[2] = SceneTriangleMake(vertexD, vertexB, newVertexE);
+    triangles[3] = SceneTriangleMake(vertexB, vertexF, newVertexE);
+    triangles[4] = SceneTriangleMake(vertexD, newVertexE, vertexH);
+    triangles[5] = SceneTriangleMake(newVertexE, vertexF, vertexH);
+    
+    glBindBuffer(GL_ARRAY_BUFFER, vertexBufferID);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(triangles), triangles, GL_DYNAMIC_DRAW);//3
+}
+
+/////////////////////////////////////////////////////////////////
+// This method sets the value of the center vertex height to the
+// value obtained from sender
+- (IBAction)takeCenterVertexHeightFrom:(UISlider *)sender;
+{
+   self.centerVertexHeight = sender.value;
+}
+
 
 @end
 

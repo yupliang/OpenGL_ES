@@ -15,6 +15,7 @@
 }
 
 @property (strong, nonatomic) GLKBaseEffect *baseEffect;
+@property (nonatomic) GLfloat centerVertexHeight;
 
 @end
 
