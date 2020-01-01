@@ -17,11 +17,11 @@ SceneVertex vertexA = {{-0.5,0.5,-0.5},{0.0,0.0,1.0}};
 SceneVertex vertexB = {{-0.5,0.0,-0.5},{0.0,0.0,1.0}};
 SceneVertex vertexC = {{-0.5,-0.5,-0.5},{0.0,0.0,1.0}};
 SceneVertex vertexD = {{0.0,0.5,-0.5},{0.0,0.0,1.0}};
-SceneVertex vertexE = {{0.0,0.0,0.0},{0.0,0.0,1.0}};
+SceneVertex vertexE = {{0.0,0.0,-0.5},{0.0,0.0,1.0}};
 SceneVertex vertexF = {{0.0,-0.5,-0.5},{0.0,0.0,1.0}};
 SceneVertex vertexG = {{0.5,0.5,-0.5},{0.0,0.0,1.0}};
 SceneVertex vertexH = {{0.5,0,-0.5},{0.0,0.0,1.0}};
-SceneVertex vertexI = {{-0.5,-0.5,-0.5},{0.0,0.0,1.0}};
+SceneVertex vertexI = {{0.5,-0.5,-0.5},{0.0,0.0,1.0}};
 
 typedef struct {
     SceneVertex vertices[3];
@@ -61,6 +61,21 @@ static SceneTriangle SceneTriangleMake(
     self.baseEffect.light0.diffuseColor = GLKVector4Make(0.7f, 0.7f, 0.7f, 1.0f);
     self.baseEffect.light0.position = GLKVector4Make(1.0f, 1.0f, 0.5f, 0.0f);//第4个元素是0，表明是一个指向无限远的光源的方向
     
+
+//    {  // Comment out this block to render the scene top down
+//       GLKMatrix4 modelViewMatrix = GLKMatrix4MakeRotation(
+//          GLKMathDegreesToRadians(-60.0f), 1.0f, 0.0f, 0.0f);
+//       modelViewMatrix = GLKMatrix4Rotate(
+//          modelViewMatrix,
+//          GLKMathDegreesToRadians(-30.0f), 0.0f, 0.0f, 1.0f);
+//       modelViewMatrix = GLKMatrix4Translate(
+//          modelViewMatrix,
+//          0.0f, 0.0f, 0.25f);
+//
+//       self.baseEffect.transform.modelviewMatrix = modelViewMatrix;
+////       self.extraEffect.transform.modelviewMatrix = modelViewMatrix;
+//    }
+    
     triangles[0] = SceneTriangleMake(vertexA, vertexB, vertexD);
     triangles[1] = SceneTriangleMake(vertexB, vertexC, vertexF);
     triangles[2] = SceneTriangleMake(vertexD, vertexB, vertexE);
@@ -90,6 +105,7 @@ static SceneTriangle SceneTriangleMake(
     glGenBuffers(1, &vertexBufferID);//1
     glBindBuffer(GL_ARRAY_BUFFER, vertexBufferID);//2
     NSLog(@"sizeof float %d", sizeof(float));
+    NSLog(@"size of sizeof(triangles)/sizeof(SceneVertex) %lu", sizeof(triangles)/sizeof(SceneVertex));
 
 
     glBufferData(GL_ARRAY_BUFFER, sizeof(triangles), triangles, GL_DYNAMIC_DRAW);//3
@@ -139,13 +155,13 @@ static SceneTriangle SceneTriangleMake(
                           sizeof(SceneVertex),
                           NULL+offsetof(SceneVertex, positionCoords));//5
     
-    glEnableVertexAttribArray(GLKVertexAttribNormal);//4
-    glVertexAttribPointer(GLKVertexAttribNormal,
-                          3,
-                          GL_FLOAT,
-                          GL_FALSE,
-                          sizeof(SceneVertex),
-                          NULL+offsetof(SceneVertex, normalVectors));//5
+//    glEnableVertexAttribArray(GLKVertexAttribNormal);//4
+//    glVertexAttribPointer(GLKVertexAttribNormal,
+//                          3,
+//                          GL_FLOAT,
+//                          GL_FALSE,
+//                          sizeof(SceneVertex),
+//                          NULL+offsetof(SceneVertex, normalVectors));//5
     
     glDrawArrays(GL_TRIANGLES, 0, sizeof(triangles)/sizeof(SceneVertex));//6
 }
