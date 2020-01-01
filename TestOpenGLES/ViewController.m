@@ -23,6 +23,8 @@ SceneVertex vertexG = {{0.5,0.5,-0.5},{0.0,0.0,1.0}};
 SceneVertex vertexH = {{0.5,0,-0.5},{0.0,0.0,1.0}};
 SceneVertex vertexI = {{0.5,-0.5,-0.5},{0.0,0.0,1.0}};
 
+#define NUM_FACES (8)
+
 typedef struct {
     SceneVertex vertices[3];
 } SceneTriangle;
@@ -33,6 +35,13 @@ static SceneTriangle SceneTriangleMake(
    const SceneVertex vertexA,
    const SceneVertex vertexB,
    const SceneVertex vertexC);
+
+static  GLKVector3 SceneVector3UnitNormal(
+const GLKVector3 vectorA,
+const GLKVector3 vectorB);
+
+static void SceneTrianglesUpdateFaceNormals(
+SceneTriangle someTriangles[NUM_FACES]);
 
 @interface ViewController ()
 {
@@ -109,6 +118,8 @@ static SceneTriangle SceneTriangleMake(
 
 
     glBufferData(GL_ARRAY_BUFFER, sizeof(triangles), triangles, GL_DYNAMIC_DRAW);//3
+    
+    self.centerVertexHeight = 0.0;
 }
 
 /*
@@ -189,6 +200,8 @@ static SceneTriangle SceneTriangleMake(
     NSLog(@"value changed from %f to %f", _centerVertexHeight, aValue);
    _centerVertexHeight = aValue;
    
+    
+    
     SceneVertex newVertexE = vertexE;
     newVertexE.positionCoords.z = self.centerVertexHeight;
     triangles[2] = SceneTriangleMake(vertexD, vertexB, newVertexE);
@@ -196,8 +209,12 @@ static SceneTriangle SceneTriangleMake(
     triangles[4] = SceneTriangleMake(vertexD, newVertexE, vertexH);
     triangles[5] = SceneTriangleMake(newVertexE, vertexF, vertexH);
     
+    SceneTrianglesUpdateFaceNormals(triangles);
+    
     glBindBuffer(GL_ARRAY_BUFFER, vertexBufferID);
     glBufferData(GL_ARRAY_BUFFER, sizeof(triangles), triangles, GL_DYNAMIC_DRAW);//3
+    
+    
 }
 
 /////////////////////////////////////////////////////////////////
@@ -219,4 +236,55 @@ static SceneTriangle SceneTriangleMake(const SceneVertex vertexA, const SceneVer
     result.vertices[2] = vertexC;
     
     return result;
+}
+
+/////////////////////////////////////////////////////////////////
+// This function returns the face normal vector for triangle.
+static GLKVector3 SceneTriangleFaceNormal(
+   const SceneTriangle triangle)
+{
+   GLKVector3 vectorA = GLKVector3Subtract(
+      triangle.vertices[1].positionCoords,
+      triangle.vertices[0].positionCoords);
+   GLKVector3 vectorB = GLKVector3Subtract(
+      triangle.vertices[2].positionCoords,
+      triangle.vertices[0].positionCoords);
+      
+   return SceneVector3UnitNormal(
+      vectorA,
+      vectorB);
+}
+
+
+/////////////////////////////////////////////////////////////////
+// Calculates the face normal vectors for 8 triangles and then
+// update the normal vectors for each vertex of each triangle
+// using the triangle's face normal for all three for the
+// triangle's vertices
+static void SceneTrianglesUpdateFaceNormals(
+   SceneTriangle someTriangles[NUM_FACES])
+{
+   int                i;
+   
+   for (i=0; i<NUM_FACES; i++)
+   {
+      GLKVector3 faceNormal = SceneTriangleFaceNormal(
+         someTriangles[i]);
+      someTriangles[i].vertices[0].normalVectors = faceNormal;
+      someTriangles[i].vertices[1].normalVectors = faceNormal;
+      someTriangles[i].vertices[2].normalVectors = faceNormal;
+   }
+}
+
+#pragma mark - Utility GLKVector3 functions
+
+/////////////////////////////////////////////////////////////////
+// Returns a unit vector in the same direction as the cross
+// product of vectorA and VectorB
+GLKVector3 SceneVector3UnitNormal(
+   const GLKVector3 vectorA,
+   const GLKVector3 vectorB)
+{
+   return GLKVector3Normalize(
+      GLKVector3CrossProduct(vectorA, vectorB));
 }
