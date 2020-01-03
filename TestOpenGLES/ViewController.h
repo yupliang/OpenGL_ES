@@ -17,5 +17,9 @@
 @property (strong, nonatomic) GLKBaseEffect *baseEffect;
 @property (nonatomic) GLfloat centerVertexHeight;
 
+@property (strong, nonatomic) GLKTextureInfo *blandTextureInfo;
+@property (strong, nonatomic) GLKTextureInfo *interestingTextureInfo;
+@property (nonatomic) BOOL shouldUseDetailLighting;
+
 @end
 

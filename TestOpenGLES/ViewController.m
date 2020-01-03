@@ -10,18 +10,18 @@
 
 typedef struct {
     GLKVector3 positionCoords;
-    GLKVector3 normalVectors;
+    GLKVector2 textureCoords;
 } SceneVertex;
 
-SceneVertex vertexA = {{-0.5,0.5,-0.5},{0.0,0.0,1.0}};
-SceneVertex vertexB = {{-0.5,0.0,-0.5},{0.0,0.0,1.0}};
-SceneVertex vertexC = {{-0.5,-0.5,-0.5},{0.0,0.0,1.0}};
-SceneVertex vertexD = {{0.0,0.5,-0.5},{0.0,0.0,1.0}};
-SceneVertex vertexE = {{0.0,0.0,0},{0.0,0.0,1.0}};
-SceneVertex vertexF = {{0.0,-0.5,-0.5},{0.0,0.0,1.0}};
-SceneVertex vertexG = {{0.5,0.5,-0.5},{0.0,0.0,1.0}};
-SceneVertex vertexH = {{0.5,0,-0.5},{0.0,0.0,1.0}};
-SceneVertex vertexI = {{0.5,-0.5,-0.5},{0.0,0.0,1.0}};
+SceneVertex vertexA = {{-0.5,0.5,-0.5},{0.0,1.0}};
+SceneVertex vertexB = {{-0.5,0.0,-0.5},{0.0,0.5}};
+SceneVertex vertexC = {{-0.5,-0.5,-0.5},{0.0,0.0}};
+SceneVertex vertexD = {{0.0,0.5,-0.5},{0.5,1.0}};
+SceneVertex vertexE = {{0.0,0.0,0},{0.5,0.5}};
+SceneVertex vertexF = {{0.0,-0.5,-0.5},{0.5,0.0}};
+SceneVertex vertexG = {{0.5,0.5,-0.5},{1.0,1.0}};
+SceneVertex vertexH = {{0.5,0,-0.5},{1.0,0.5}};
+SceneVertex vertexI = {{0.5,-0.5,-0.5},{1.0,0.0}};
 
 typedef struct {
     SceneVertex vertices[3];
@@ -57,9 +57,8 @@ static SceneTriangle SceneTriangleMake(
     [EAGLContext setCurrentContext:view.context];
     
     self.baseEffect = [[GLKBaseEffect alloc] init];
-    self.baseEffect.light0.enabled = GL_TRUE;
-    self.baseEffect.light0.diffuseColor = GLKVector4Make(0.7f, 0.7f, 0.7f, 1.0f);
-    self.baseEffect.light0.position = GLKVector4Make(1.0f, 1.0f, 0.5f, 0.0f);//第4个元素是0，表明是一个指向无限远的光源的方向
+    self.baseEffect.useConstantColor = GL_TRUE;
+    self.baseEffect.constantColor = GLKVector4Make(1.0, 1.0, 1.0, 1.0);
     
 
     {  // Comment out this block to render the scene top down
@@ -75,6 +74,14 @@ static SceneTriangle SceneTriangleMake(
        self.baseEffect.transform.modelviewMatrix = modelViewMatrix;
 //       self.extraEffect.transform.modelviewMatrix = modelViewMatrix;
     }
+    
+    //Setup texture
+    CGImageRef blandSimulatedLightingImageRef = [[UIImage imageNamed:@"Lighting256x256.png"] CGImage];
+    _blandTextureInfo = [GLKTextureLoader textureWithCGImage:blandSimulatedLightingImageRef
+                                                     options:@{GLKTextureLoaderOriginBottomLeft:@(true)} error:NULL];
+    CGImageRef interestingSimulatedLightingImageRef = [[UIImage imageNamed:@"LightingDetail256x256.png"] CGImage];
+    _interestingTextureInfo = [GLKTextureLoader textureWithCGImage:interestingSimulatedLightingImageRef
+                                                           options:@{GLKTextureLoaderOriginBottomLeft:@(1)} error:NULL];
     
     triangles[0] = SceneTriangleMake(vertexA, vertexB, vertexD);
     triangles[1] = SceneTriangleMake(vertexB, vertexC, vertexF);
@@ -143,6 +150,14 @@ static SceneTriangle SceneTriangleMake(
  }
  */
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect {
+    if (self.shouldUseDetailLighting) {
+        self.baseEffect.texture2d0.name = _interestingTextureInfo.name;
+        self.baseEffect.texture2d0.target = _interestingTextureInfo.target;
+    } else {    
+        self.baseEffect.texture2d0.name = _blandTextureInfo.name;
+        self.baseEffect.texture2d0.target = _blandTextureInfo.target;
+    }
+    
     [self.baseEffect prepareToDraw];
     glClear(GL_COLOR_BUFFER_BIT);
 //    glDrawArrays(GL_TRIANGLES, 0, 6);//6
@@ -155,13 +170,13 @@ static SceneTriangle SceneTriangleMake(
                           sizeof(SceneVertex),
                           NULL+offsetof(SceneVertex, positionCoords));//5
     
-    glEnableVertexAttribArray(GLKVertexAttribNormal);//4
-    glVertexAttribPointer(GLKVertexAttribNormal,
-                          3,
+    glEnableVertexAttribArray(GLKVertexAttribTexCoord0);//4
+    glVertexAttribPointer(GLKVertexAttribTexCoord0,
+                          2,
                           GL_FLOAT,
                           GL_FALSE,
                           sizeof(SceneVertex),
-                          NULL+offsetof(SceneVertex, normalVectors));//5
+                          NULL+offsetof(SceneVertex, textureCoords));//5
     
     glDrawArrays(GL_TRIANGLES, 0, sizeof(triangles)/sizeof(SceneVertex));//6
 }
@@ -208,6 +223,9 @@ static SceneTriangle SceneTriangleMake(
    self.centerVertexHeight = sender.value;
 }
 
+- (IBAction)takeShouldUseDetailLightingFrom:(UISwitch *)sender {
+    self.shouldUseDetailLighting = sender.isOn;
+}
 
 @end
 
