@@ -70,6 +70,10 @@ SceneTriangle someTriangles[NUM_FACES]);
     self.baseEffect.light0.diffuseColor = GLKVector4Make(0.7f, 0.7f, 0.7f, 1.0f);
     self.baseEffect.light0.position = GLKVector4Make(1.0f, 1.0f, 0.5f, 0.0f);//第4个元素是0，表明是一个指向无限远的光源的方向
     
+    CGImageRef imageRef = [[UIImage imageNamed:@"Earth512x256.jpg"] CGImage];
+    GLKTextureInfo *textureInfo = [GLKTextureLoader textureWithCGImage:imageRef options:@{GLKTextureLoaderOriginBottomLeft:@(1)} error:NULL];
+    self.baseEffect.texture2d0.name = textureInfo.name;
+    self.baseEffect.texture2d0.target = textureInfo.target;
 
     {  // Comment out this block to render the scene top down
        GLKMatrix4 modelViewMatrix = GLKMatrix4MakeRotation(
@@ -173,6 +177,9 @@ SceneTriangle someTriangles[NUM_FACES]);
                           GL_FALSE,
                           sizeof(SceneVertex),
                           NULL+offsetof(SceneVertex, normalVectors));//5
+    
+    glEnableVertexAttribArray(GLKVertexAttribTexCoord0);
+    glVertexAttribPointer(GLKVertexAttribTexCoord0, 2, GL_FLOAT, GL_FALSE, size, <#const GLvoid *ptr#>)
     
     glDrawArrays(GL_TRIANGLES, 0, sizeof(triangles)/sizeof(SceneVertex));//6
 }
