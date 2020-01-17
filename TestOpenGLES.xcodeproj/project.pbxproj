@@ -33,7 +33,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		FD02381523D1E29A00E00AD9 /* sphere.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = sphere.h; path = /Users/zhangzhongliang/Desktop/Demo/tmp/TestOpenGLES/TestOpenGLES/sphere.h; sourceTree = "<absolute>"; };
 		FD1A988F23B1932A00873833 /* AGLKVertexAttribArrayBuffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AGLKVertexAttribArrayBuffer.h; sourceTree = "<group>"; };
 		FD1A989023B1932A00873833 /* AGLKVertexAttribArrayBuffer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AGLKVertexAttribArrayBuffer.m; sourceTree = "<group>"; };
 		FD28010C23ACCA7E00B75551 /* TestOpenGLES.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestOpenGLES.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -54,6 +53,7 @@
 		FD28013623B0D29900B75551 /* Common_Icon_Insightflower.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Common_Icon_Insightflower.png; sourceTree = "<group>"; };
 		FD734F7323B31C9D002CF664 /* icon_1_3_map.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_1_3_map.png; sourceTree = "<group>"; };
 		FD76C01123C2C06C00E04D08 /* Earth512x256.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Earth512x256.jpg; sourceTree = "<group>"; };
+		FD7BF51B23D1F69900297A68 /* sphere.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sphere.h; sourceTree = "<group>"; };
 		FDBC9BEF23B33EB900FBBBDC /* beetle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = beetle.png; sourceTree = "<group>"; };
 		FDBC9BF123B3653100FBBBDC /* leaves.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = leaves.gif; path = "Learning-OpenGL-ES-for-iOS-master/ch03_EXAMPLES/OpenGLES_Ch3_2/OpenGLES_Ch3_2/leaves.gif"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -97,7 +97,7 @@
 		FD28010E23ACCA7E00B75551 /* TestOpenGLES */ = {
 			isa = PBXGroup;
 			children = (
-				FD02381523D1E29A00E00AD9 /* sphere.h */,
+				FD7BF51B23D1F69900297A68 /* sphere.h */,
 				FD76C01123C2C06C00E04D08 /* Earth512x256.jpg */,
 				FDBC9BF123B3653100FBBBDC /* leaves.gif */,
 				FDBC9BEF23B33EB900FBBBDC /* beetle.png */,
