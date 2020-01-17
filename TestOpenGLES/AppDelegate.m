@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import <sys/kdebug_signpost.h>
 
 @interface AppDelegate ()
 
@@ -17,7 +18,15 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
+//    CADisplayLink *link = [CADisplayLink displayLinkWithTarget:self selector:@selector(Log)];
+//    [link addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
     return YES;
+}
+- (void)Log {
+    kdebug_signpost_start(7, 0, 0, 0, 0);
+    NSLog(@"Log");
+    kdebug_signpost_end(7, 0, 0, 0, 0);
 }
 
 
