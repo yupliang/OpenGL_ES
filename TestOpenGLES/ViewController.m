@@ -48,16 +48,24 @@
 
     // Setup texture
     CGImageRef imageRef = [[UIImage imageNamed:@"Earth512x256.jpg"] CGImage];
-    GLKTextureInfo *textureInfo = [GLKTextureLoader textureWithCGImage:imageRef options:nil error:NULL];
+    GLKTextureInfo *textureInfo = [GLKTextureLoader textureWithCGImage:imageRef options:@{GLKTextureLoaderOriginBottomLeft:@(1)} error:NULL];
     self.baseEffect.texture2d0.name = textureInfo.name;
     self.baseEffect.texture2d0.target = textureInfo.target;
     glClearColor(0, 0.3, 0.5, 1);
     
     glGenBuffers(1, &vertexBufferID);
     glBindBuffer(GL_ARRAY_BUFFER, vertexBufferID);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(sphereVerts), sphereVerts, GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(sphereVerts), sphereVerts, GL_STATIC_DRAW);
     
-//    glEnable(GL_DEPTH_TEST);
+    glGenBuffers(1, &_textureBufferID);
+    glBindBuffer(GL_ARRAY_BUFFER, _textureBufferID);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(sphereTexCoords), sphereTexCoords, GL_STATIC_DRAW);
+    
+    glGenBuffers(1, &_normalBufferID);
+    glBindBuffer(GL_ARRAY_BUFFER, _normalBufferID);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(sphereNormals), sphereNormals, GL_STATIC_DRAW);
+    
+    glEnable(GL_DEPTH_TEST);
 }
 
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect {
@@ -65,10 +73,20 @@
     kdebug_signpost_start(10, 0, 0, 0, 1);
 //
     [self.baseEffect prepareToDraw];
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 //
+    glBindBuffer(GL_ARRAY_BUFFER, vertexBufferID);
     glEnableVertexAttribArray(GLKVertexAttribPosition);
     glVertexAttribPointer(GLKVertexAttribPosition, 3, GL_FLOAT, GL_FALSE, 3*sizeof(GLfloat), NULL+0);
+    
+    glBindBuffer(GL_ARRAY_BUFFER, _normalBufferID);
+    glEnableVertexAttribArray(GLKVertexAttribNormal);
+    glVertexAttribPointer(GLKVertexAttribNormal, 3, GL_FLOAT, GL_FALSE, 3*sizeof(GLfloat), NULL+0);
+    
+    glBindBuffer(GL_ARRAY_BUFFER, _textureBufferID);
+    glEnableVertexAttribArray(GLKVertexAttribTexCoord0);
+    glVertexAttribPointer(GLKVertexAttribTexCoord0, 2, GL_FLOAT, GL_FALSE, 2*sizeof(GLfloat), NULL+0);
+    
     glDrawArrays(GL_TRIANGLES, 0, sphereNumVerts);
     kdebug_signpost_end(10, 0, 0, 0, 1);
 //
