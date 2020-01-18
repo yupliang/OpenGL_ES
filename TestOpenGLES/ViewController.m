@@ -31,9 +31,9 @@
     // Configure a light to simulate the Sun
     self.baseEffect.light0.enabled = GL_TRUE;
     self.baseEffect.light0.diffuseColor = GLKVector4Make(
-       0.7f, // Red
-       0.7f, // Green
-       0.7f, // Blue
+       1.7f, // Red
+       1.7f, // Green
+       1.7f, // Blue
        1.0f);// Alpha
     self.baseEffect.light0.ambientColor = GLKVector4Make(
        0.2f, // Red
@@ -87,10 +87,13 @@
     glEnableVertexAttribArray(GLKVertexAttribTexCoord0);
     glVertexAttribPointer(GLKVertexAttribTexCoord0, 2, GL_FLOAT, GL_FALSE, 2*sizeof(GLfloat), NULL+0);
     
+    const GLfloat aspectRation = (GLfloat)view.drawableWidth/(GLfloat)view.drawableHeight;
+    self.baseEffect.transform.projectionMatrix = GLKMatrix4MakeScale(1*1.5, aspectRation*1.5, 1*1.5);
+    
     glDrawArrays(GL_TRIANGLES, 0, sphereNumVerts);
     kdebug_signpost_end(10, 0, 0, 0, 1);
-//
-    #ifdef DEBUG
+
+//    #ifdef DEBUG
        {  // Report any errors
           GLenum error = glGetError();
           if(GL_NO_ERROR != error)
@@ -98,7 +101,7 @@
              NSLog(@"GL Erroraa: 0x%x", error);
           }
        }
-    #endif
+//    #endif
 }
 
 @end
