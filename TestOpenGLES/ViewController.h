@@ -14,6 +14,7 @@
     GLuint vertexBufferID;
     GLuint _textureBufferID;
     GLuint _normalBufferID;
+    GLfloat _rotateDegree;
 }
 
 @property (strong, nonatomic) GLKBaseEffect *baseEffect;
