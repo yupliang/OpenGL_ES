@@ -10,6 +10,13 @@
 #import <sys/kdebug_signpost.h>
 #import "lowPolyAxesAndModels2.h"
 
+/////////////////////////////////////////////////////////////////
+// Forward declaration
+static GLKMatrix4 SceneMatrixForTransform(
+   SceneTransformationSelector type,
+   SceneTransformationAxisSelector axis,
+   float value);
+
 @implementation ViewController
 
 - (void)viewDidLoad {
@@ -65,21 +72,14 @@
         0.4f,
         0.0f);
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_BLEND);
+    
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect {
     //arg4 用于区分颜色， 0 Blue, 1 Green, 2 Purple, 3 Orange, 4 Red
     kdebug_signpost_start(10, 0, 0, 0, 1);
-    [self.baseEffect prepareToDraw];
-    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-    
-    glBindBuffer(GL_ARRAY_BUFFER, vertexBufferID);
-    glEnableVertexAttribArray(GLKVertexAttribPosition);
-    glVertexAttribPointer(GLKVertexAttribPosition, 3, GL_FLOAT, GL_FALSE, 3*sizeof(GLfloat), NULL+0);
-    
-    glBindBuffer(GL_ARRAY_BUFFER, normalBufferID);
-    glEnableVertexAttribArray(GLKVertexAttribNormal);
-    glVertexAttribPointer(GLKVertexAttribNormal, 3, GL_FLOAT, GL_FALSE, 3*sizeof(GLfloat), NULL+0);
     
     const GLfloat  aspectRatio =
        (GLfloat)view.drawableWidth / (GLfloat)view.drawableHeight;
@@ -93,7 +93,55 @@
           -5.0,
           5.0);
     
+    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+    
+    glBindBuffer(GL_ARRAY_BUFFER, vertexBufferID);
+    glEnableVertexAttribArray(GLKVertexAttribPosition);
+    glVertexAttribPointer(GLKVertexAttribPosition, 3, GL_FLOAT, GL_FALSE, 3*sizeof(GLfloat), NULL+0);
+    
+    glBindBuffer(GL_ARRAY_BUFFER, normalBufferID);
+    glEnableVertexAttribArray(GLKVertexAttribNormal);
+    glVertexAttribPointer(GLKVertexAttribNormal, 3, GL_FLOAT, GL_FALSE, 3*sizeof(GLfloat), NULL+0);
+    
+    // Save the current Modelview matrix
+    GLKMatrix4 savedModelviewMatrix =
+       self.baseEffect.transform.modelviewMatrix;
+    
+    // Combine all of the user chosen transforms in order
+    GLKMatrix4 newModelviewMatrix =
+       GLKMatrix4Multiply(savedModelviewMatrix,
+       SceneMatrixForTransform(
+          transform1Type,
+          transform1Axis,
+          transform1Value));
+//    newModelviewMatrix =
+//       GLKMatrix4Multiply(newModelviewMatrix,
+//       SceneMatrixForTransform(
+//          transform2Type,
+//          transform2Axis,
+//          transform2Value));
+//    newModelviewMatrix =
+//       GLKMatrix4Multiply(newModelviewMatrix,
+//       SceneMatrixForTransform(
+//          transform3Type,
+//          transform3Axis,
+//          transform3Value));
+
+    // Set the Modelview matrix for drawing
+    self.baseEffect.transform.modelviewMatrix = newModelviewMatrix;
+    
+    // Make the light white
+    self.baseEffect.light0.diffuseColor = GLKVector4Make(
+       1.0f, // Red
+       1.0f, // Green
+       1.0f, // Blue
+       1.0f);// Alpha
+    [self.baseEffect prepareToDraw];
     glDrawArrays(GL_TRIANGLES, 0, lowPolyAxesAndModels2NumVerts);
+    
+//    self.baseEffect.transform.projectionMatrix = savedModelviewMatrix;
+//    [self.baseEffect prepareToDraw];
+//    glDrawArrays(GL_TRIANGLES, 0, lowPolyAxesAndModels2NumVerts);
     
     kdebug_signpost_end(10, 0, 0, 0, 1);
 
@@ -110,5 +158,125 @@
 
 //MARK: Actions
 
+/////////////////////////////////////////////////////////////////
+// Reset all user transforms to identity values
+- (IBAction)takeTransform1TypeFrom:(UISegmentedControl *)aControl
+{
+   transform1Type = [aControl selectedSegmentIndex];
+}
 
+/////////////////////////////////////////////////////////////////
+// Update variables with user transform information and redraw
+- (IBAction)takeTransform1AxisFrom:(UISegmentedControl *)aControl
+{
+   transform1Axis = [aControl selectedSegmentIndex];
+}
+
+/////////////////////////////////////////////////////////////////
+// Update variables with user transform information and redraw
+- (IBAction)takeTransform1ValueFrom:(UISlider *)aControl
+{
+   transform1Value = [aControl value];
+}
+
+/////////////////////////////////////////////////////////////////
+// Reset all user transforms to identity values
+- (IBAction)resetIdentity:(id)dummy
+{
+   [_transform1ValueSlider setValue:0.0];
+//   [transform2ValueSlider setValue:0.0];
+//   [transform3ValueSlider setValue:0.0];
+   transform1Value = 0.0;
+//   transform2Value = 0.0;
+//   transform3Value = 0.0;
+}
+
+/////////////////////////////////////////////////////////////////
+// Transform the current coordinate system according to the users
+// selections stored in global variables, transform1Type,
+// transform1Axis, and transform1Value.
+static GLKMatrix4 SceneMatrixForTransform(
+   SceneTransformationSelector type,
+   SceneTransformationAxisSelector axis,
+   float value)
+{
+   GLKMatrix4 result = GLKMatrix4Identity;
+   
+   switch (type) {
+      case SceneRotate:
+         switch (axis) {
+            case SceneXAxis:
+               result = GLKMatrix4MakeRotation(
+                  GLKMathDegreesToRadians(180.0 * value),
+                  1.0,
+                  0.0,
+                  0.0);
+               break;
+            case SceneYAxis:
+               result = GLKMatrix4MakeRotation(
+                  GLKMathDegreesToRadians(180.0 * value),
+                  0.0,
+                  1.0,
+                  0.0);
+               break;
+            case SceneZAxis:
+            default:
+               result = GLKMatrix4MakeRotation(
+                  GLKMathDegreesToRadians(180.0 * value),
+                  0.0,
+                  0.0,
+                  1.0);
+               break;
+         }
+         break;
+      case SceneScale:
+         switch (axis) {
+            case SceneXAxis:
+               result = GLKMatrix4MakeScale(
+                  1.0 + value,
+                  1.0,
+                  1.0);
+               break;
+            case SceneYAxis:
+               result = GLKMatrix4MakeScale(
+                  1.0,
+                  1.0 + value,
+                  1.0);
+               break;
+            case SceneZAxis:
+            default:
+               result = GLKMatrix4MakeScale(
+                  1.0,
+                  1.0,
+                  1.0 + value);
+               break;
+         }
+         break;
+      default:
+         switch (axis) {
+            case SceneXAxis:
+               result = GLKMatrix4MakeTranslation(
+                  0.3 * value,
+                  0.0,
+                  0.0);
+               break;
+            case SceneYAxis:
+               result = GLKMatrix4MakeTranslation(
+                  0.0,
+                  0.3 * value,
+                  0.0);
+               break;
+            case SceneZAxis:
+            default:
+               result = GLKMatrix4MakeTranslation(
+                  0.0,
+                  0.0,
+                  0.3 * value);
+               break;
+         }
+         break;
+   }
+   
+   return result;
+}
 @end
