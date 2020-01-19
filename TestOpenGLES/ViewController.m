@@ -66,6 +66,8 @@
     glBufferData(GL_ARRAY_BUFFER, sizeof(sphereNormals), sphereNormals, GL_STATIC_DRAW);
     
     glEnable(GL_DEPTH_TEST);
+    
+    _scaleX = 1;
 }
 
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect {
@@ -88,7 +90,7 @@
     glVertexAttribPointer(GLKVertexAttribTexCoord0, 2, GL_FLOAT, GL_FALSE, 2*sizeof(GLfloat), NULL+0);
     
     const GLfloat aspectRation = (GLfloat)view.drawableWidth/(GLfloat)view.drawableHeight;
-    self.baseEffect.transform.projectionMatrix = GLKMatrix4MakeScale(1*1.5, aspectRation*1.5, 1*1.5);
+    self.baseEffect.transform.projectionMatrix = GLKMatrix4MakeScale(1*1.5*_scaleX, aspectRation*1.5, 1*1.5);
     self.baseEffect.transform.projectionMatrix = GLKMatrix4Rotate(self.baseEffect.transform.projectionMatrix, GLKMathDegreesToRadians(-30), 0, 0, 1);
     self.baseEffect.transform.projectionMatrix = GLKMatrix4Rotate(self.baseEffect.transform.projectionMatrix, GLKMathDegreesToRadians(_rotateDegree), 0, 1, 0);
     
@@ -111,6 +113,8 @@
 - (IBAction)rotateEarthModel:(UISlider *)sender {
     _rotateDegree = sender.value;
 }
-
+- (IBAction)scaleX:(UISlider *)sender {
+    _scaleX = sender.value;
+}
 
 @end
