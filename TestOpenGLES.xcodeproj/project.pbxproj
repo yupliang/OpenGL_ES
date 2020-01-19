@@ -33,6 +33,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		FD02381623D4361700E00AD9 /* lowPolyAxesAndModels2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lowPolyAxesAndModels2.h; path = "Learning-OpenGL-ES-for-iOS-master/ch05_EXAMPLES/Resources/lowPolyAxesAndModels2.h"; sourceTree = SOURCE_ROOT; };
 		FD1A988F23B1932A00873833 /* AGLKVertexAttribArrayBuffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AGLKVertexAttribArrayBuffer.h; sourceTree = "<group>"; };
 		FD1A989023B1932A00873833 /* AGLKVertexAttribArrayBuffer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AGLKVertexAttribArrayBuffer.m; sourceTree = "<group>"; };
 		FD28010C23ACCA7E00B75551 /* TestOpenGLES.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestOpenGLES.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -97,6 +98,7 @@
 		FD28010E23ACCA7E00B75551 /* TestOpenGLES */ = {
 			isa = PBXGroup;
 			children = (
+				FD02381623D4361700E00AD9 /* lowPolyAxesAndModels2.h */,
 				FD7BF51B23D1F69900297A68 /* sphere.h */,
 				FD76C01123C2C06C00E04D08 /* Earth512x256.jpg */,
 				FDBC9BF123B3653100FBBBDC /* leaves.gif */,

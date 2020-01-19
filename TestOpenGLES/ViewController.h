@@ -12,14 +12,11 @@
 
 @interface ViewController : GLKViewController {
     GLuint vertexBufferID;
-    GLuint _textureBufferID;
-    GLuint _normalBufferID;
-    GLfloat _rotateDegree;
-    GLfloat _scaleX;
+
 }
 
 @property (strong, nonatomic) GLKBaseEffect *baseEffect;
-@property (nonatomic) GLfloat centerVertexHeight;
+
 
 @end
 
