@@ -12,7 +12,7 @@
 
 @interface ViewController : GLKViewController {
     GLuint vertexBufferID;
-
+    GLuint normalBufferID;
 }
 
 @property (strong, nonatomic) GLKBaseEffect *baseEffect;
