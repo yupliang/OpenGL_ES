@@ -72,8 +72,8 @@ static GLKMatrix4 SceneMatrixForTransform(
         0.4f,
         0.0f);
     glEnable(GL_DEPTH_TEST);
-    glEnable(GL_BLEND);
     
+    glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
@@ -139,9 +139,15 @@ static GLKMatrix4 SceneMatrixForTransform(
     [self.baseEffect prepareToDraw];
     glDrawArrays(GL_TRIANGLES, 0, lowPolyAxesAndModels2NumVerts);
     
-//    self.baseEffect.transform.projectionMatrix = savedModelviewMatrix;
-//    [self.baseEffect prepareToDraw];
-//    glDrawArrays(GL_TRIANGLES, 0, lowPolyAxesAndModels2NumVerts);
+    self.baseEffect.transform.modelviewMatrix = savedModelviewMatrix;
+    // Change the light color
+    self.baseEffect.light0.diffuseColor = GLKVector4Make(
+       1.0f, // Red
+       1.0f, // Green
+       0.0f, // Blue
+       0.3f);// Alpha 
+    [self.baseEffect prepareToDraw];
+    glDrawArrays(GL_TRIANGLES, 0, lowPolyAxesAndModels2NumVerts);
     
     kdebug_signpost_end(10, 0, 0, 0, 1);
 
