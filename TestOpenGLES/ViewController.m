@@ -29,7 +29,7 @@
     self.baseEffect = [[GLKBaseEffect alloc] init];
 
     // Configure a light to simulate the Sun
-    self.baseEffect.light0.enabled = GL_TRUE;
+//    self.baseEffect.light0.enabled = GL_TRUE;
     self.baseEffect.light0.diffuseColor = GLKVector4Make(
        1.7f, // Red
        1.7f, // Green
@@ -89,8 +89,10 @@
     
     const GLfloat aspectRation = (GLfloat)view.drawableWidth/(GLfloat)view.drawableHeight;
     self.baseEffect.transform.projectionMatrix = GLKMatrix4MakeScale(1*1.5, aspectRation*1.5, 1*1.5);
+    self.baseEffect.transform.projectionMatrix = GLKMatrix4Rotate(self.baseEffect.transform.projectionMatrix, GLKMathDegreesToRadians(-30), 0, 0, 1);
     self.baseEffect.transform.projectionMatrix = GLKMatrix4Rotate(self.baseEffect.transform.projectionMatrix, GLKMathDegreesToRadians(_rotateDegree), 0, 1, 0);
     
+
     glDrawArrays(GL_TRIANGLES, 0, sphereNumVerts);
     kdebug_signpost_end(10, 0, 0, 0, 1);
 
