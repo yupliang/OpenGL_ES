@@ -36,10 +36,20 @@ typedef enum
     SceneTransformationSelector      transform1Type;
     SceneTransformationAxisSelector  transform1Axis;
     float                            transform1Value;
+    
+    SceneTransformationSelector      transform2Type;
+    SceneTransformationAxisSelector  transform2Axis;
+    float                            transform2Value;
+    
+    SceneTransformationSelector      transform3Type;
+    SceneTransformationAxisSelector  transform3Axis;
+    float                            transform3Value;
 }
 
 @property (strong, nonatomic) GLKBaseEffect *baseEffect;
 @property (strong, nonatomic) IBOutlet UISlider *transform1ValueSlider;
+@property (strong, nonatomic) IBOutlet UISlider *transform2ValueSlider;
+@property (strong, nonatomic) IBOutlet UISlider *transform3ValueSlider;
 
 @end
 

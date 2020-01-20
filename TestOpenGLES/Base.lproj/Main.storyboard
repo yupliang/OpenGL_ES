@@ -17,7 +17,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="m2P-1T-pCm">
-                                <rect key="frame" x="16" y="578" width="83" height="32"/>
+                                <rect key="frame" x="9" y="480" width="83" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <segments>
                                     <segment title="T"/>
@@ -29,7 +29,7 @@
                                 </connections>
                             </segmentedControl>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="KRw-bm-URC">
-                                <rect key="frame" x="107" y="578" width="83" height="32"/>
+                                <rect key="frame" x="100" y="480" width="83" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <segments>
                                     <segment title="X"/>
@@ -49,10 +49,72 @@
                                 </connections>
                             </button>
                             <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="-1" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="jxD-gU-BOQ">
-                                <rect key="frame" x="204" y="578" width="157" height="30"/>
+                                <rect key="frame" x="197" y="480" width="157" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <connections>
                                     <action selector="takeTransform1ValueFrom:" destination="sAw-Yg-wLj" eventType="valueChanged" id="Kfa-mw-zU2"/>
+                                </connections>
+                            </slider>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="B1l-Do-ymA">
+                                <rect key="frame" x="9" y="541" width="83" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <segments>
+                                    <segment title="T"/>
+                                    <segment title="R"/>
+                                    <segment title="S"/>
+                                </segments>
+                                <connections>
+                                    <action selector="takeTransform2TypeFrom:" destination="sAw-Yg-wLj" eventType="valueChanged" id="kD7-fg-Qcq"/>
+                                </connections>
+                            </segmentedControl>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="3Lh-qC-7z3">
+                                <rect key="frame" x="100" y="541" width="83" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <segments>
+                                    <segment title="X"/>
+                                    <segment title="Y"/>
+                                    <segment title="Z"/>
+                                </segments>
+                                <connections>
+                                    <action selector="takeTransform2AxisFrom:" destination="sAw-Yg-wLj" eventType="valueChanged" id="aT9-Z5-4LF"/>
+                                </connections>
+                            </segmentedControl>
+                            <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="-1" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="cjT-2Q-Pdq">
+                                <rect key="frame" x="197" y="541" width="157" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <action selector="takeTransform2ValueFrom:" destination="sAw-Yg-wLj" eventType="valueChanged" id="Rwa-PH-0rs"/>
+                                </connections>
+                            </slider>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="hTF-oa-b4T">
+                                <rect key="frame" x="9" y="602" width="83" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <segments>
+                                    <segment title="T"/>
+                                    <segment title="R"/>
+                                    <segment title="S"/>
+                                </segments>
+                                <connections>
+                                    <action selector="takeTransform3TypeFrom:" destination="sAw-Yg-wLj" eventType="valueChanged" id="7if-W1-qqj"/>
+                                </connections>
+                            </segmentedControl>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="2G4-RL-Bzk">
+                                <rect key="frame" x="100" y="602" width="83" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <segments>
+                                    <segment title="X"/>
+                                    <segment title="Y"/>
+                                    <segment title="Z"/>
+                                </segments>
+                                <connections>
+                                    <action selector="takeTransform3AxisFrom:" destination="sAw-Yg-wLj" eventType="valueChanged" id="4Pu-BL-CXK"/>
+                                </connections>
+                            </segmentedControl>
+                            <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="-1" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="79W-eN-QnV">
+                                <rect key="frame" x="197" y="602" width="157" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <action selector="takeTransform3ValueFrom:" destination="sAw-Yg-wLj" eventType="valueChanged" id="r5J-HX-ZLS"/>
                                 </connections>
                             </slider>
                         </subviews>
@@ -63,6 +125,8 @@
                     </glkView>
                     <connections>
                         <outlet property="transform1ValueSlider" destination="jxD-gU-BOQ" id="1oO-yU-sS9"/>
+                        <outlet property="transform2ValueSlider" destination="cjT-2Q-Pdq" id="pAb-BJ-AjA"/>
+                        <outlet property="transform3ValueSlider" destination="79W-eN-QnV" id="kP6-Kf-EXa"/>
                     </connections>
                 </glkViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DfF-G4-8GU" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

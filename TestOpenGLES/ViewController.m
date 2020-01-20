@@ -114,18 +114,18 @@ static GLKMatrix4 SceneMatrixForTransform(
           transform1Type,
           transform1Axis,
           transform1Value));
-//    newModelviewMatrix =
-//       GLKMatrix4Multiply(newModelviewMatrix,
-//       SceneMatrixForTransform(
-//          transform2Type,
-//          transform2Axis,
-//          transform2Value));
-//    newModelviewMatrix =
-//       GLKMatrix4Multiply(newModelviewMatrix,
-//       SceneMatrixForTransform(
-//          transform3Type,
-//          transform3Axis,
-//          transform3Value));
+    newModelviewMatrix =
+       GLKMatrix4Multiply(newModelviewMatrix,
+       SceneMatrixForTransform(
+          transform2Type,
+          transform2Axis,
+          transform2Value));
+    newModelviewMatrix =
+       GLKMatrix4Multiply(newModelviewMatrix,
+       SceneMatrixForTransform(
+          transform3Type,
+          transform3Axis,
+          transform3Value));
 
     // Set the Modelview matrix for drawing
     self.baseEffect.transform.modelviewMatrix = newModelviewMatrix;
@@ -187,14 +187,52 @@ static GLKMatrix4 SceneMatrixForTransform(
 
 /////////////////////////////////////////////////////////////////
 // Reset all user transforms to identity values
+- (IBAction)takeTransform2TypeFrom:(UISegmentedControl *)aControl
+{
+   transform2Type = [aControl selectedSegmentIndex];
+}
+
+/////////////////////////////////////////////////////////////////
+// Update variables with user transform information and redraw
+- (IBAction)takeTransform2AxisFrom:(UISegmentedControl *)aControl
+{
+   transform2Axis = [aControl selectedSegmentIndex];
+}
+
+- (IBAction)takeTransform2ValueFrom:(UISlider *)aControl
+{
+   transform2Value = [aControl value];
+}
+
+/////////////////////////////////////////////////////////////////
+// Reset all user transforms to identity values
+- (IBAction)takeTransform3TypeFrom:(UISegmentedControl *)aControl
+{
+   transform3Type = [aControl selectedSegmentIndex];
+}
+
+/////////////////////////////////////////////////////////////////
+// Update variables with user transform information and redraw
+- (IBAction)takeTransform3AxisFrom:(UISegmentedControl *)aControl
+{
+   transform3Axis = [aControl selectedSegmentIndex];
+}
+
+- (IBAction)takeTransform3ValueFrom:(UISlider *)aControl
+{
+   transform3Value = [aControl value];
+}
+
+/////////////////////////////////////////////////////////////////
+// Reset all user transforms to identity values
 - (IBAction)resetIdentity:(id)dummy
 {
    [_transform1ValueSlider setValue:0.0];
-//   [transform2ValueSlider setValue:0.0];
-//   [transform3ValueSlider setValue:0.0];
+   [_transform2ValueSlider setValue:0.0];
+   [_transform3ValueSlider setValue:0.0];
    transform1Value = 0.0;
-//   transform2Value = 0.0;
-//   transform3Value = 0.0;
+   transform2Value = 0.0;
+   transform3Value = 0.0;
 }
 
 /////////////////////////////////////////////////////////////////
