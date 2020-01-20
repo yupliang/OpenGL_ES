@@ -10,46 +10,17 @@
 
 #import <GLKit/GLKit.h>
 
-/////////////////////////////////////////////////////////////////
-// Constants identify user selected transformations
-typedef enum
-{
-    SceneTranslate = 0,
-    SceneRotate,
-    SceneScale,
-} SceneTransformationSelector;
-
-
-/////////////////////////////////////////////////////////////////
-// Constants identify user selected axis for transformation
-typedef enum
-{
-    SceneXAxis = 0,
-    SceneYAxis,
-    SceneZAxis,
-} SceneTransformationAxisSelector;
+@class AGLKTextureTransformBaseEffect;
 
 @interface ViewController : GLKViewController {
     GLuint vertexBufferID;
-    GLuint normalBufferID;
-    
-    SceneTransformationSelector      transform1Type;
-    SceneTransformationAxisSelector  transform1Axis;
-    float                            transform1Value;
-    
-    SceneTransformationSelector      transform2Type;
-    SceneTransformationAxisSelector  transform2Axis;
-    float                            transform2Value;
-    
-    SceneTransformationSelector      transform3Type;
-    SceneTransformationAxisSelector  transform3Axis;
-    float                            transform3Value;
 }
 
-@property (strong, nonatomic) GLKBaseEffect *baseEffect;
-@property (strong, nonatomic) IBOutlet UISlider *transform1ValueSlider;
-@property (strong, nonatomic) IBOutlet UISlider *transform2ValueSlider;
-@property (strong, nonatomic) IBOutlet UISlider *transform3ValueSlider;
+@property (strong, nonatomic) AGLKTextureTransformBaseEffect *baseEffect;
+@property (nonatomic) GLKMatrixStackRef textureMatrixStack;
+
+@property (nonatomic) float textureScaleFactor;
+@property (nonatomic) float textureAngle;
 
 @end
 

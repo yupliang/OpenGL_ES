@@ -16,6 +16,8 @@
 		FD28012223ACCA8100B75551 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FD28012123ACCA8100B75551 /* main.m */; };
 		FD28012C23ACCA8100B75551 /* TestOpenGLESUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = FD28012B23ACCA8100B75551 /* TestOpenGLESUITests.m */; };
 		FD28013723B0D29900B75551 /* Common_Icon_Insightflower.png in Resources */ = {isa = PBXBuildFile; fileRef = FD28013623B0D29900B75551 /* Common_Icon_Insightflower.png */; };
+		FD4A813A23D5ABF7009B11B3 /* AGLKContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FD4A813923D5ABF7009B11B3 /* AGLKContext.m */; };
+		FD4A813D23D5B0B4009B11B3 /* AGLKTextureTransformBaseEffect.m in Sources */ = {isa = PBXBuildFile; fileRef = FD4A813B23D5B0B4009B11B3 /* AGLKTextureTransformBaseEffect.m */; };
 		FD734F7423B31C9D002CF664 /* icon_1_3_map.png in Resources */ = {isa = PBXBuildFile; fileRef = FD734F7323B31C9D002CF664 /* icon_1_3_map.png */; };
 		FD76C01223C2C06C00E04D08 /* Earth512x256.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FD76C01123C2C06C00E04D08 /* Earth512x256.jpg */; };
 		FDBC9BF023B33EB900FBBBDC /* beetle.png in Resources */ = {isa = PBXBuildFile; fileRef = FDBC9BEF23B33EB900FBBBDC /* beetle.png */; };
@@ -52,6 +54,10 @@
 		FD28012B23ACCA8100B75551 /* TestOpenGLESUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestOpenGLESUITests.m; sourceTree = "<group>"; };
 		FD28012D23ACCA8100B75551 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FD28013623B0D29900B75551 /* Common_Icon_Insightflower.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Common_Icon_Insightflower.png; sourceTree = "<group>"; };
+		FD4A813823D5ABF7009B11B3 /* AGLKContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AGLKContext.h; path = "Learning-OpenGL-ES-for-iOS-master/AGLKit/AGLKContext.h"; sourceTree = SOURCE_ROOT; };
+		FD4A813923D5ABF7009B11B3 /* AGLKContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AGLKContext.m; path = "Learning-OpenGL-ES-for-iOS-master/AGLKit/AGLKContext.m"; sourceTree = SOURCE_ROOT; };
+		FD4A813B23D5B0B4009B11B3 /* AGLKTextureTransformBaseEffect.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = AGLKTextureTransformBaseEffect.m; path = /Users/zhangzhongliang/Desktop/Demo/tmp/TestOpenGLES/TestOpenGLES/AGLKTextureTransformBaseEffect.m; sourceTree = "<absolute>"; };
+		FD4A813C23D5B0B4009B11B3 /* AGLKTextureTransformBaseEffect.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AGLKTextureTransformBaseEffect.h; path = /Users/zhangzhongliang/Desktop/Demo/tmp/TestOpenGLES/TestOpenGLES/AGLKTextureTransformBaseEffect.h; sourceTree = "<absolute>"; };
 		FD734F7323B31C9D002CF664 /* icon_1_3_map.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_1_3_map.png; sourceTree = "<group>"; };
 		FD76C01123C2C06C00E04D08 /* Earth512x256.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Earth512x256.jpg; sourceTree = "<group>"; };
 		FD7BF51B23D1F69900297A68 /* sphere.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sphere.h; sourceTree = "<group>"; };
@@ -98,6 +104,10 @@
 		FD28010E23ACCA7E00B75551 /* TestOpenGLES */ = {
 			isa = PBXGroup;
 			children = (
+				FD4A813823D5ABF7009B11B3 /* AGLKContext.h */,
+				FD4A813923D5ABF7009B11B3 /* AGLKContext.m */,
+				FD4A813C23D5B0B4009B11B3 /* AGLKTextureTransformBaseEffect.h */,
+				FD4A813B23D5B0B4009B11B3 /* AGLKTextureTransformBaseEffect.m */,
 				FD02381623D4361700E00AD9 /* lowPolyAxesAndModels2.h */,
 				FD7BF51B23D1F69900297A68 /* sphere.h */,
 				FD76C01123C2C06C00E04D08 /* Earth512x256.jpg */,
@@ -236,9 +246,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FD4A813A23D5ABF7009B11B3 /* AGLKContext.m in Sources */,
 				FD28011723ACCA7E00B75551 /* ViewController.m in Sources */,
 				FD28011123ACCA7E00B75551 /* AppDelegate.m in Sources */,
 				FD28012223ACCA8100B75551 /* main.m in Sources */,
+				FD4A813D23D5B0B4009B11B3 /* AGLKTextureTransformBaseEffect.m in Sources */,
 				FD28011423ACCA7E00B75551 /* SceneDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
