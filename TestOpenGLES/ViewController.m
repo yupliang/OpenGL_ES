@@ -36,9 +36,12 @@ static const SceneVertex vertices[] =
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-//    textureScaleFactor = 1.5f;
-//    textureAngle = 90.0f;
-//    self.textureMatrixStack = GLKMatrixStackCreate(kCFAllocatorDefault);
+    textureScaleFactor = 1.5f;
+    textureAngle = 90.0f;
+    self.textureMatrixStack = GLKMatrixStackCreate(kCFAllocatorDefault);
+    GLKMatrixStackPop(self.textureMatrixStack);
+    GLKMatrixStackPop(self.textureMatrixStack);
+    GLKMatrix4 aa = GLKMatrixStackGetMatrix4(self.textureMatrixStack);
     
     GLKView *view = (GLKView *)self.view;
     NSAssert([view isKindOfClass:[GLKView class]], @"View controller's view is not a GLKView");
@@ -71,6 +74,8 @@ static const SceneVertex vertices[] =
     self.baseEffect.texture2d0.enabled = GL_TRUE;
     
     glClearColor(1.0f, 1.0f, 0.0f, 1.0f);
+    GLKMatrixStackLoadMatrix4(self.textureMatrixStack, self.baseEffect.textureMatrix2d0);
+    
 }
 
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect {
@@ -88,26 +93,31 @@ static const SceneVertex vertices[] =
     glEnableVertexAttribArray(GLKVertexAttribTexCoord0);
     glVertexAttribPointer(GLKVertexAttribTexCoord0, 2, GL_FLOAT, GL_FALSE, sizeof(SceneVertex), NULL+offsetof(SceneVertex, textureCoords));
     
-//    GLKMatrixStackPush(self.textureMatrixStack);
-//
-//        // Scale and rotate about the center of the texture
-//        GLKMatrixStackTranslate(
-//           self.textureMatrixStack,
-//           0.5, 0.5, 0.0);
-//        GLKMatrixStackScale(
-//           self.textureMatrixStack,
-//           textureScaleFactor, textureScaleFactor, 1.0);
-//        GLKMatrixStackRotate(   // Rotate about Z axis
-//           self.textureMatrixStack,
-//           GLKMathDegreesToRadians(textureAngle),
-//           0.0, 0.0, 1.0);
-//        GLKMatrixStackTranslate(
-//           self.textureMatrixStack,
-//           -0.5, -0.5, 0.0);
+    
+//    NSLog(@"before push to stack, size is %d", GLKMatrixStackSize(self.textureMatrixStack));
+    GLKMatrixStackPush(self.textureMatrixStack);
+//    NSLog(@"after push to stack, size is %d", GLKMatrixStackSize(self.textureMatrixStack));
+    // Scale and rotate about the center of the texture
+    GLKMatrixStackTranslate(
+       self.textureMatrixStack,
+       0.5, 0.5, 0.0);
+    GLKMatrixStackScale(
+       self.textureMatrixStack,
+       textureScaleFactor, textureScaleFactor, 1.0);
+    GLKMatrixStackRotate(   // Rotate about Z axis
+       self.textureMatrixStack,
+       GLKMathDegreesToRadians(textureAngle),
+       0.0, 0.0, 1.0);
+    GLKMatrixStackTranslate(
+       self.textureMatrixStack,
+       -0.5, -0.5, 0.0);
         
-//    self.baseEffect.textureMatrix2d0 = GLKMatrixStackGetMatrix4(self.textureMatrixStack);
-
+    self.baseEffect.textureMatrix2d0 = GLKMatrixStackGetMatrix4(self.textureMatrixStack);
+    [self.baseEffect prepareToDrawMultitextures];
     glDrawArrays(GL_TRIANGLES, 0, sizeof(vertices)/sizeof(SceneVertex));
+    
+    GLKMatrixStackPop(self.textureMatrixStack);
+    self.baseEffect.textureMatrix2d0 = GLKMatrixStackGetMatrix4(self.textureMatrixStack);
     
     kdebug_signpost_end(10, 0, 0, 0, 1);
 
@@ -122,4 +132,23 @@ static const SceneVertex vertices[] =
 //    #endif
 }
 
+//MARK: actions
+/////////////////////////////////////////////////////////////////
+// This method is called by a user interface object configured
+// in Interface Builder and updates the value of a global
+// variable that a texture coordinate system scale factor.
+- (IBAction)takeTextureScaleFactorFrom:(UISlider *)aControl
+{
+   self.textureScaleFactor = [aControl value];
+}
+
+
+/////////////////////////////////////////////////////////////////
+// This method is called by a user interface object configured
+// in Interface Builder and updates the value of a global
+// variable that a texture coordinate system rotation angle.
+- (IBAction)takeTextureAngleFrom:(UISlider *)aControl
+{
+   self.textureAngle = [aControl value];
+}
 @end
