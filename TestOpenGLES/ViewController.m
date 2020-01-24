@@ -31,18 +31,19 @@ static const SceneVertex vertices[] =
    {{-0.5f, -0.5f, 0.0f}, {0.0f, 0.0f}}, // lower left corner
    {{ 0.5f, -0.5f, 0.0f}, {1.0f, 0.0f}}, // lower right corner
    {{-0.5f,  0.5f, 0.0f}, {0.0f, 1.0f}}, // upper left corner
+    {{ 1.0f, -0.67f, 0.0f}, {1.0f, 0.0f}},  // second triangle
+    {{-1.0f,  0.67f, 0.0f}, {0.0f, 1.0f}},
+    {{ 1.0f,  0.67f, 0.0f}, {1.0f, 1.0f}},
+
 };
 
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    textureScaleFactor = 1.5f;
-    textureAngle = 90.0f;
-    self.textureMatrixStack = GLKMatrixStackCreate(kCFAllocatorDefault);
-    GLKMatrixStackPop(self.textureMatrixStack);
-    GLKMatrixStackPop(self.textureMatrixStack);
-    GLKMatrix4 aa = GLKMatrixStackGetMatrix4(self.textureMatrixStack);
+    textureScaleFactor = 1.0f;
     
+    self.textureMatrixStack = GLKMatrixStackCreate(kCFAllocatorDefault);
+
     GLKView *view = (GLKView *)self.view;
     NSAssert([view isKindOfClass:[GLKView class]], @"View controller's view is not a GLKView");
     
@@ -74,7 +75,30 @@ static const SceneVertex vertices[] =
     self.baseEffect.texture2d0.enabled = GL_TRUE;
     
     glClearColor(1.0f, 1.0f, 0.0f, 1.0f);
-    GLKMatrixStackLoadMatrix4(self.textureMatrixStack, self.baseEffect.textureMatrix2d0);
+    
+    // Setup texture1
+    CGImageRef imageRef1 =
+       [[UIImage imageNamed:@"beetle.png"] CGImage];
+       
+    GLKTextureInfo *textureInfo1 = [GLKTextureLoader
+       textureWithCGImage:imageRef1
+       options:[NSDictionary dictionaryWithObjectsAndKeys:
+          [NSNumber numberWithBool:YES],
+          GLKTextureLoaderOriginBottomLeft, nil]
+       error:NULL];
+
+    self.baseEffect.texture2d1.name = textureInfo1.name;
+    self.baseEffect.texture2d1.target = textureInfo1.target;
+    self.baseEffect.texture2d1.enabled = GL_TRUE;
+    self.baseEffect.texture2d1.envMode = GLKTextureEnvModeDecal;
+    [self.baseEffect.texture2d1
+       aglkSetParameter:GL_TEXTURE_WRAP_S
+       value:GL_REPEAT];
+    [self.baseEffect.texture2d1
+       aglkSetParameter:GL_TEXTURE_WRAP_T
+       value:GL_REPEAT];
+    
+    GLKMatrixStackLoadMatrix4(self.textureMatrixStack, self.baseEffect.textureMatrix2d1);
     
 }
 
@@ -93,10 +117,12 @@ static const SceneVertex vertices[] =
     glEnableVertexAttribArray(GLKVertexAttribTexCoord0);
     glVertexAttribPointer(GLKVertexAttribTexCoord0, 2, GL_FLOAT, GL_FALSE, sizeof(SceneVertex), NULL+offsetof(SceneVertex, textureCoords));
     
-    
-//    NSLog(@"before push to stack, size is %d", GLKMatrixStackSize(self.textureMatrixStack));
+    glBindBuffer(GL_ARRAY_BUFFER, vertexBufferID);
+    glEnableVertexAttribArray(GLKVertexAttribTexCoord1);
+    glVertexAttribPointer(GLKVertexAttribTexCoord1, 2, GL_FLOAT, GL_FALSE, sizeof(SceneVertex), NULL+offsetof(SceneVertex, textureCoords));
+
     GLKMatrixStackPush(self.textureMatrixStack);
-//    NSLog(@"after push to stack, size is %d", GLKMatrixStackSize(self.textureMatrixStack));
+
     // Scale and rotate about the center of the texture
     GLKMatrixStackTranslate(
        self.textureMatrixStack,
@@ -112,12 +138,12 @@ static const SceneVertex vertices[] =
        self.textureMatrixStack,
        -0.5, -0.5, 0.0);
         
-    self.baseEffect.textureMatrix2d0 = GLKMatrixStackGetMatrix4(self.textureMatrixStack);
+    self.baseEffect.textureMatrix2d1 = GLKMatrixStackGetMatrix4(self.textureMatrixStack);
     [self.baseEffect prepareToDrawMultitextures];
     glDrawArrays(GL_TRIANGLES, 0, sizeof(vertices)/sizeof(SceneVertex));
     
     GLKMatrixStackPop(self.textureMatrixStack);
-    self.baseEffect.textureMatrix2d0 = GLKMatrixStackGetMatrix4(self.textureMatrixStack);
+    self.baseEffect.textureMatrix2d1 = GLKMatrixStackGetMatrix4(self.textureMatrixStack);
     
     kdebug_signpost_end(10, 0, 0, 0, 1);
 
@@ -139,7 +165,7 @@ static const SceneVertex vertices[] =
 // variable that a texture coordinate system scale factor.
 - (IBAction)takeTextureScaleFactorFrom:(UISlider *)aControl
 {
-   self.textureScaleFactor = [aControl value];
+    self.textureScaleFactor = [aControl value];
 }
 
 
