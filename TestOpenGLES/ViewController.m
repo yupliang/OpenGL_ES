@@ -19,7 +19,7 @@
 
     GLKView *view = (GLKView *)self.view;
     NSAssert([view isKindOfClass:[GLKView class]], @"View controller's view is not a GLKView");
-    
+    view.drawableDepthFormat = GLKViewDrawableDepthFormat16;
     view.context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
     [EAGLContext setCurrentContext:view.context];
     
@@ -48,13 +48,14 @@
     self.baseEffect.texture2d0.enabled = true;
     self.baseEffect.texture2d0.target = earthTextureInfo.target;
     self.baseEffect.texture2d0.name = earthTextureInfo.name;
+    glEnable(GL_DEPTH_TEST);
 }
 
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect {
     //arg4 用于区分颜色， 0 Blue, 1 Green, 2 Purple, 3 Orange, 4 Red
     kdebug_signpost_start(10, 0, 0, 0, 1);
     [self.baseEffect prepareToDraw];
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     
     glBindBuffer(GL_ARRAY_BUFFER, vertexBufferID);
     glEnableVertexAttribArray(GLKVertexAttribPosition);
