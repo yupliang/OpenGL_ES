@@ -10,17 +10,12 @@
 
 #import <GLKit/GLKit.h>
 
-@class AGLKTextureTransformBaseEffect;
-
 @interface ViewController : GLKViewController {
     GLuint vertexBufferID;
 }
 
-@property (strong, nonatomic) AGLKTextureTransformBaseEffect *baseEffect;
+@property (strong, nonatomic) GLKBaseEffect *baseEffect;
 @property (nonatomic) GLKMatrixStackRef textureMatrixStack;
-
-@property (nonatomic) float textureScaleFactor;
-@property (nonatomic) float textureAngle;
 
 @end
 

@@ -8,39 +8,12 @@
 
 #import "ViewController.h"
 #import <sys/kdebug_signpost.h>
-#import "AGLKContext.h"
-#import "AGLKTextureTransformBaseEffect.h"
+#import "sphere.h"
 
 @implementation ViewController
 
-@synthesize textureScaleFactor;
-@synthesize textureAngle;
-
-/////////////////////////////////////////////////////////////////
-// This data type is used to store information for each vertex
-typedef struct {
-   GLKVector3  positionCoords;
-   GLKVector2  textureCoords;
-}
-SceneVertex;
-
-
-// Define vertex data for a triangle to use in example
-static const SceneVertex vertices[] =
-{
-   {{-0.5f, -0.5f, 0.0f}, {0.0f, 0.0f}}, // lower left corner
-   {{ 0.5f, -0.5f, 0.0f}, {1.0f, 0.0f}}, // lower right corner
-   {{-0.5f,  0.5f, 0.0f}, {0.0f, 1.0f}}, // upper left corner
-    {{ 1.0f, -0.67f, 0.0f}, {1.0f, 0.0f}},  // second triangle
-    {{-1.0f,  0.67f, 0.0f}, {0.0f, 1.0f}},
-    {{ 1.0f,  0.67f, 0.0f}, {1.0f, 1.0f}},
-
-};
-
-
 - (void)viewDidLoad {
     [super viewDidLoad];
-    textureScaleFactor = 1.0f;
     
     self.textureMatrixStack = GLKMatrixStackCreate(kCFAllocatorDefault);
 
@@ -50,100 +23,26 @@ static const SceneVertex vertices[] =
     view.context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
     [EAGLContext setCurrentContext:view.context];
     
+    self.baseEffect = [[GLKBaseEffect alloc] init];
+    
     glGenBuffers(1, &vertexBufferID);
     glBindBuffer(GL_ARRAY_BUFFER, vertexBufferID);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(sphereVerts), sphereVerts, GL_STATIC_DRAW);
     
-    self.baseEffect = [[AGLKTextureTransformBaseEffect alloc] init];
-    self.baseEffect.useConstantColor = GL_TRUE;
-    self.baseEffect.constantColor = GLKVector4Make(1.0f, 0.0f, 0.0f, 1.0f);
-    
-    
-    // Setup texture0
-    CGImageRef imageRef0 =
-       [[UIImage imageNamed:@"leaves.gif"] CGImage];
-       
-    GLKTextureInfo *textureInfo0 = [GLKTextureLoader
-       textureWithCGImage:imageRef0
-       options:[NSDictionary dictionaryWithObjectsAndKeys:
-          [NSNumber numberWithBool:YES],
-          GLKTextureLoaderOriginBottomLeft, nil]
-       error:NULL];
-       
-    self.baseEffect.texture2d0.name = textureInfo0.name;
-    self.baseEffect.texture2d0.target = textureInfo0.target;
-    self.baseEffect.texture2d0.enabled = GL_TRUE;
-    
-    glClearColor(1.0f, 1.0f, 0.0f, 1.0f);
-    
-    // Setup texture1
-    CGImageRef imageRef1 =
-       [[UIImage imageNamed:@"beetle.png"] CGImage];
-       
-    GLKTextureInfo *textureInfo1 = [GLKTextureLoader
-       textureWithCGImage:imageRef1
-       options:[NSDictionary dictionaryWithObjectsAndKeys:
-          [NSNumber numberWithBool:YES],
-          GLKTextureLoaderOriginBottomLeft, nil]
-       error:NULL];
-
-    self.baseEffect.texture2d1.name = textureInfo1.name;
-    self.baseEffect.texture2d1.target = textureInfo1.target;
-    self.baseEffect.texture2d1.enabled = GL_TRUE;
-    self.baseEffect.texture2d1.envMode = GLKTextureEnvModeDecal;
-    [self.baseEffect.texture2d1
-       aglkSetParameter:GL_TEXTURE_WRAP_S
-       value:GL_REPEAT];
-    [self.baseEffect.texture2d1
-       aglkSetParameter:GL_TEXTURE_WRAP_T
-       value:GL_REPEAT];
-    
-    GLKMatrixStackLoadMatrix4(self.textureMatrixStack, self.baseEffect.textureMatrix2d1);
-    
+    glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
 }
 
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect {
     //arg4 用于区分颜色， 0 Blue, 1 Green, 2 Purple, 3 Orange, 4 Red
     kdebug_signpost_start(10, 0, 0, 0, 1);
     [self.baseEffect prepareToDraw];
-    
     glClear(GL_COLOR_BUFFER_BIT);
     
     glBindBuffer(GL_ARRAY_BUFFER, vertexBufferID);
     glEnableVertexAttribArray(GLKVertexAttribPosition);
-    glVertexAttribPointer(GLKVertexAttribPosition, 3, GL_FLOAT, GL_FALSE, sizeof(SceneVertex), NULL+offsetof(SceneVertex, positionCoords));
+    glVertexAttribPointer(GLKVertexAttribPosition, 3, GL_FLOAT, GL_FALSE, sizeof(GL_FLOAT)*3, NULL+0);
     
-    glBindBuffer(GL_ARRAY_BUFFER, vertexBufferID);
-    glEnableVertexAttribArray(GLKVertexAttribTexCoord0);
-    glVertexAttribPointer(GLKVertexAttribTexCoord0, 2, GL_FLOAT, GL_FALSE, sizeof(SceneVertex), NULL+offsetof(SceneVertex, textureCoords));
-    
-    glBindBuffer(GL_ARRAY_BUFFER, vertexBufferID);
-    glEnableVertexAttribArray(GLKVertexAttribTexCoord1);
-    glVertexAttribPointer(GLKVertexAttribTexCoord1, 2, GL_FLOAT, GL_FALSE, sizeof(SceneVertex), NULL+offsetof(SceneVertex, textureCoords));
-
-    GLKMatrixStackPush(self.textureMatrixStack);
-
-    // Scale and rotate about the center of the texture
-    GLKMatrixStackTranslate(
-       self.textureMatrixStack,
-       0.5, 0.5, 0.0);
-    GLKMatrixStackScale(
-       self.textureMatrixStack,
-       textureScaleFactor, textureScaleFactor, 1.0);
-    GLKMatrixStackRotate(   // Rotate about Z axis
-       self.textureMatrixStack,
-       GLKMathDegreesToRadians(textureAngle),
-       0.0, 0.0, 1.0);
-    GLKMatrixStackTranslate(
-       self.textureMatrixStack,
-       -0.5, -0.5, 0.0);
-        
-    self.baseEffect.textureMatrix2d1 = GLKMatrixStackGetMatrix4(self.textureMatrixStack);
-    [self.baseEffect prepareToDrawMultitextures];
-    glDrawArrays(GL_TRIANGLES, 0, sizeof(vertices)/sizeof(SceneVertex));
-    
-    GLKMatrixStackPop(self.textureMatrixStack);
-    self.baseEffect.textureMatrix2d1 = GLKMatrixStackGetMatrix4(self.textureMatrixStack);
+    glDrawArrays(GL_TRIANGLES, 0, sphereNumVerts);
     
     kdebug_signpost_end(10, 0, 0, 0, 1);
 
@@ -165,7 +64,7 @@ static const SceneVertex vertices[] =
 // variable that a texture coordinate system scale factor.
 - (IBAction)takeTextureScaleFactorFrom:(UISlider *)aControl
 {
-    self.textureScaleFactor = [aControl value];
+    
 }
 
 
@@ -175,6 +74,6 @@ static const SceneVertex vertices[] =
 // variable that a texture coordinate system rotation angle.
 - (IBAction)takeTextureAngleFrom:(UISlider *)aControl
 {
-   self.textureAngle = [aControl value];
+   
 }
 @end
