@@ -29,7 +29,25 @@
     glBindBuffer(GL_ARRAY_BUFFER, vertexBufferID);
     glBufferData(GL_ARRAY_BUFFER, sizeof(sphereVerts), sphereVerts, GL_STATIC_DRAW);
     
+    glGenBuffers(1, &earthTextureBufferID);
+    glBindBuffer(GL_ARRAY_BUFFER, earthTextureBufferID);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(sphereTexCoords), sphereTexCoords, GL_STATIC_DRAW);
+    
     glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+    
+    // Setup Earth texture
+    CGImageRef earthImageRef =
+       [[UIImage imageNamed:@"Earth512x256.jpg"] CGImage];
+       
+    earthTextureInfo = [GLKTextureLoader
+       textureWithCGImage:earthImageRef
+       options:[NSDictionary dictionaryWithObjectsAndKeys:
+          [NSNumber numberWithBool:YES],
+          GLKTextureLoaderOriginBottomLeft, nil]
+       error:NULL];
+    self.baseEffect.texture2d0.enabled = true;
+    self.baseEffect.texture2d0.target = earthTextureInfo.target;
+    self.baseEffect.texture2d0.name = earthTextureInfo.name;
 }
 
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect {
@@ -41,6 +59,10 @@
     glBindBuffer(GL_ARRAY_BUFFER, vertexBufferID);
     glEnableVertexAttribArray(GLKVertexAttribPosition);
     glVertexAttribPointer(GLKVertexAttribPosition, 3, GL_FLOAT, GL_FALSE, sizeof(GL_FLOAT)*3, NULL+0);
+    
+    glBindBuffer(GL_ARRAY_BUFFER, earthTextureBufferID);
+    glEnableVertexAttribArray(GLKVertexAttribTexCoord0);
+    glVertexAttribPointer(GLKVertexAttribTexCoord0, 2, GL_FLOAT, GL_FALSE, sizeof(GLfloat)*2, NULL+0);
     
     glDrawArrays(GL_TRIANGLES, 0, sphereNumVerts);
     

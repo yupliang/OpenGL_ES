@@ -12,6 +12,9 @@
 
 @interface ViewController : GLKViewController {
     GLuint vertexBufferID;
+    GLuint earthTextureBufferID;
+    GLKTextureInfo *earthTextureInfo;
+    
 }
 
 @property (strong, nonatomic) GLKBaseEffect *baseEffect;
