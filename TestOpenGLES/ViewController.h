@@ -13,6 +13,7 @@
 @interface ViewController : GLKViewController {
     GLuint vertexBufferID;
     GLuint earthTextureBufferID;
+    GLuint earthNormalBufferID;
     GLKTextureInfo *earthTextureInfo;
     
 }

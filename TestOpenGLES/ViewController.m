@@ -33,6 +33,10 @@
     glBindBuffer(GL_ARRAY_BUFFER, earthTextureBufferID);
     glBufferData(GL_ARRAY_BUFFER, sizeof(sphereTexCoords), sphereTexCoords, GL_STATIC_DRAW);
     
+    glGenBuffers(1, &earthNormalBufferID);
+    glBindBuffer(GL_ARRAY_BUFFER, earthNormalBufferID);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(sphereNormals), sphereNormals, GL_STATIC_DRAW);
+    
     glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
     
     // Setup Earth texture
@@ -49,6 +53,23 @@
     self.baseEffect.texture2d0.target = earthTextureInfo.target;
     self.baseEffect.texture2d0.name = earthTextureInfo.name;
     glEnable(GL_DEPTH_TEST);
+    
+    self.baseEffect.light0.enabled = GL_TRUE;
+    self.baseEffect.light0.diffuseColor = GLKVector4Make(
+       1.0f, // Red
+       1.0f, // Green
+       1.0f, // Blue
+       1.0f);// Alpha
+    self.baseEffect.light0.position = GLKVector4Make(
+       1.0f,
+       0.0f,
+       0.8f,
+       0.0f);
+    self.baseEffect.light0.ambientColor = GLKVector4Make(
+       0.2f, // Red
+       0.2f, // Green
+       0.2f, // Blue
+       1.0f);// Alpha
 }
 
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect {
@@ -64,6 +85,10 @@
     glBindBuffer(GL_ARRAY_BUFFER, earthTextureBufferID);
     glEnableVertexAttribArray(GLKVertexAttribTexCoord0);
     glVertexAttribPointer(GLKVertexAttribTexCoord0, 2, GL_FLOAT, GL_FALSE, sizeof(GLfloat)*2, NULL+0);
+    
+    glBindBuffer(GL_ARRAY_BUFFER, earthNormalBufferID);
+    glEnableVertexAttribArray(GLKVertexAttribNormal);
+    glVertexAttribPointer(GLKVertexAttribNormal, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat)*3, NULL+0);
     
     glDrawArrays(GL_TRIANGLES, 0, sphereNumVerts);
     
