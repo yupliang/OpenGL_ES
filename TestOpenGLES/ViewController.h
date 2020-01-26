@@ -15,12 +15,13 @@
     GLuint earthTextureBufferID;
     GLuint earthNormalBufferID;
     GLKTextureInfo *earthTextureInfo;
-    
+    GLKTextureInfo *moonTextureInfo;
 }
 
 @property (strong, nonatomic) GLKBaseEffect *baseEffect;
 @property (nonatomic) GLKMatrixStackRef modelviewMatrixStack;
 @property (nonatomic) GLfloat earthRotationAngleDegrees;
+@property (nonatomic) GLfloat moonRotationAngleDegrees;
 
 @end
 

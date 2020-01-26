@@ -22,6 +22,7 @@
 		FD3CD6ED23DAA46A00EC3303 /* AGLKPointParticleShader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = FD3CD6E723DAA46A00EC3303 /* AGLKPointParticleShader.vsh */; };
 		FD3CD6EE23DAA46A00EC3303 /* AGLKTextureMatrix2PointLightShader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = FD3CD6E823DAA46A00EC3303 /* AGLKTextureMatrix2PointLightShader.fsh */; };
 		FD3CD6EF23DAA46A00EC3303 /* AGLKSkyboxShader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = FD3CD6E923DAA46A00EC3303 /* AGLKSkyboxShader.vsh */; };
+		FD40901423DD938900FC1E4D /* Moon256x128.png in Resources */ = {isa = PBXBuildFile; fileRef = FD40901323DD938900FC1E4D /* Moon256x128.png */; };
 		FD4A813A23D5ABF7009B11B3 /* AGLKContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FD4A813923D5ABF7009B11B3 /* AGLKContext.m */; };
 		FD734F7423B31C9D002CF664 /* icon_1_3_map.png in Resources */ = {isa = PBXBuildFile; fileRef = FD734F7323B31C9D002CF664 /* icon_1_3_map.png */; };
 		FD76C01223C2C06C00E04D08 /* Earth512x256.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FD76C01123C2C06C00E04D08 /* Earth512x256.jpg */; };
@@ -66,6 +67,7 @@
 		FD3CD6E723DAA46A00EC3303 /* AGLKPointParticleShader.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = AGLKPointParticleShader.vsh; sourceTree = "<group>"; };
 		FD3CD6E823DAA46A00EC3303 /* AGLKTextureMatrix2PointLightShader.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = AGLKTextureMatrix2PointLightShader.fsh; sourceTree = "<group>"; };
 		FD3CD6E923DAA46A00EC3303 /* AGLKSkyboxShader.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = AGLKSkyboxShader.vsh; sourceTree = "<group>"; };
+		FD40901323DD938900FC1E4D /* Moon256x128.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Moon256x128.png; path = "Learning-OpenGL-ES-for-iOS-master/ch05_EXAMPLES/Resources/Moon256x128.png"; sourceTree = SOURCE_ROOT; };
 		FD4A813823D5ABF7009B11B3 /* AGLKContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AGLKContext.h; path = "Learning-OpenGL-ES-for-iOS-master/AGLKit/AGLKContext.h"; sourceTree = SOURCE_ROOT; };
 		FD4A813923D5ABF7009B11B3 /* AGLKContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AGLKContext.m; path = "Learning-OpenGL-ES-for-iOS-master/AGLKit/AGLKContext.m"; sourceTree = SOURCE_ROOT; };
 		FD734F7323B31C9D002CF664 /* icon_1_3_map.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_1_3_map.png; sourceTree = "<group>"; };
@@ -119,6 +121,7 @@
 				FD3CD6E323DAA46A00EC3303 /* Shaders */,
 				FDCA49B523D6AF9D00FD3EC2 /* AGLKTextureTransformBaseEffect.h */,
 				FDCA49B623D6AF9D00FD3EC2 /* AGLKTextureTransformBaseEffect.m */,
+				FD40901323DD938900FC1E4D /* Moon256x128.png */,
 				FD4A813823D5ABF7009B11B3 /* AGLKContext.h */,
 				FD4A813923D5ABF7009B11B3 /* AGLKContext.m */,
 				FD02381623D4361700E00AD9 /* lowPolyAxesAndModels2.h */,
@@ -254,6 +257,7 @@
 				FD28011F23ACCA8100B75551 /* LaunchScreen.storyboard in Resources */,
 				FD3CD6EA23DAA46A00EC3303 /* AGLKPointParticleShader.fsh in Resources */,
 				FDBC9BF223B3653100FBBBDC /* leaves.gif in Resources */,
+				FD40901423DD938900FC1E4D /* Moon256x128.png in Resources */,
 				FD28013723B0D29900B75551 /* Common_Icon_Insightflower.png in Resources */,
 				FD28011C23ACCA8100B75551 /* Assets.xcassets in Resources */,
 				FD28011A23ACCA7E00B75551 /* Main.storyboard in Resources */,

@@ -12,9 +12,14 @@
 
 @implementation ViewController
 
+@synthesize moonRotationAngleDegrees;
+
 /////////////////////////////////////////////////////////////////
-// Constants
+//MARK: Constants
 static const GLfloat  SceneEarthAxialTiltDeg = 23.5f;
+static const GLfloat  SceneMoonDistanceFromEarth = 3.0;
+static const GLfloat  SceneMoonRadiusFractionOfEarth = 0.25;
+static const GLfloat  SceneDaysPerMoonOrbit = 28.0f;
 
 
 - (void)viewDidLoad {
@@ -54,6 +59,18 @@ static const GLfloat  SceneEarthAxialTiltDeg = 23.5f;
           [NSNumber numberWithBool:YES],
           GLKTextureLoaderOriginBottomLeft, nil]
        error:NULL];
+    
+    // Setup Moon texture
+    CGImageRef moonImageRef =
+       [[UIImage imageNamed:@"Moon256x128.png"] CGImage];
+       
+    moonTextureInfo = [GLKTextureLoader
+       textureWithCGImage:moonImageRef
+       options:[NSDictionary dictionaryWithObjectsAndKeys:
+          [NSNumber numberWithBool:YES],
+          GLKTextureLoaderOriginBottomLeft, nil]
+       error:NULL];
+    
     self.baseEffect.texture2d0.enabled = true;
     self.baseEffect.texture2d0.target = earthTextureInfo.target;
     self.baseEffect.texture2d0.name = earthTextureInfo.name;
@@ -105,6 +122,8 @@ static const GLfloat  SceneEarthAxialTiltDeg = 23.5f;
     // Update the angles every frame to animate
     // (one day every 60 display updates)
     self.earthRotationAngleDegrees += 360.0f / 60.0f;
+    self.moonRotationAngleDegrees += (360.0f / 60.0f) /
+    SceneDaysPerMoonOrbit;
     
     [self.baseEffect prepareToDraw];
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
@@ -122,6 +141,7 @@ static const GLfloat  SceneEarthAxialTiltDeg = 23.5f;
     glVertexAttribPointer(GLKVertexAttribNormal, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat)*3, NULL+0);
     
     [self drawEarth];
+    [self drawMoon];
     
     kdebug_signpost_end(10, 0, 0, 0, 1);
 
@@ -184,6 +204,46 @@ static const GLfloat  SceneEarthAxialTiltDeg = 23.5f;
          
    GLKMatrixStackPop(self.modelviewMatrixStack);
    
+   self.baseEffect.transform.modelviewMatrix =
+         GLKMatrixStackGetMatrix4(self.modelviewMatrixStack);
+}
+
+// Draw the Moon
+- (void)drawMoon
+{
+   self.baseEffect.texture2d0.name = moonTextureInfo.name;
+   self.baseEffect.texture2d0.target = moonTextureInfo.target;
+
+   GLKMatrixStackPush(self.modelviewMatrixStack);
+
+      GLKMatrixStackRotate(   // Rotate to position in orbit
+         self.modelviewMatrixStack,
+         GLKMathDegreesToRadians(self.moonRotationAngleDegrees),
+         0.0, 1.0, 0.0);
+      GLKMatrixStackTranslate(// Translate to distance from Earth
+         self.modelviewMatrixStack,
+         0.0, 0.0, SceneMoonDistanceFromEarth);
+      GLKMatrixStackScale(    // Scale to size of Moon
+         self.modelviewMatrixStack,
+         SceneMoonRadiusFractionOfEarth,
+         SceneMoonRadiusFractionOfEarth,
+         SceneMoonRadiusFractionOfEarth);
+      GLKMatrixStackRotate(   // Rotate Moon on its own axis
+         self.modelviewMatrixStack,
+         GLKMathDegreesToRadians(moonRotationAngleDegrees),
+         0.0, 1.0, 0.0);
+
+      self.baseEffect.transform.modelviewMatrix =
+         GLKMatrixStackGetMatrix4(self.modelviewMatrixStack);
+
+      [self.baseEffect prepareToDraw];
+
+      // Draw triangles using vertices in the prepared vertex
+      // buffers
+    glDrawArrays(GL_TRIANGLES, 0, sphereNumVerts);
+
+   GLKMatrixStackPop(self.modelviewMatrixStack);
+
    self.baseEffect.transform.modelviewMatrix =
          GLKMatrixStackGetMatrix4(self.modelviewMatrixStack);
 }
