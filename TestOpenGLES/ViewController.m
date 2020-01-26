@@ -42,7 +42,7 @@ static const GLfloat  SceneEarthAxialTiltDeg = 23.5f;
     glBindBuffer(GL_ARRAY_BUFFER, earthNormalBufferID);
     glBufferData(GL_ARRAY_BUFFER, sizeof(sphereNormals), sphereNormals, GL_STATIC_DRAW);
     
-    glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     
     // Setup Earth texture
     CGImageRef earthImageRef =
@@ -85,6 +85,7 @@ static const GLfloat  SceneEarthAxialTiltDeg = 23.5f;
        1.0,
        1.0,
        120.0);
+    
 
     // Position scene with Earth near center of viewing volume
     self.baseEffect.transform.modelviewMatrix =
@@ -166,7 +167,7 @@ static const GLfloat  SceneEarthAxialTiltDeg = 23.5f;
       GLKMatrixStackRotate(   // Rotate (tilt Earth's axis)
          self.modelviewMatrixStack,
          GLKMathDegreesToRadians(SceneEarthAxialTiltDeg),
-         1.0, 0.0, 0.0);
+         0.0, 0.0, 1.0);
       GLKMatrixStackRotate(   // Rotate about Earth's axis
          self.modelviewMatrixStack,
          GLKMathDegreesToRadians(self.earthRotationAngleDegrees),
@@ -174,7 +175,7 @@ static const GLfloat  SceneEarthAxialTiltDeg = 23.5f;
       
       self.baseEffect.transform.modelviewMatrix =
          GLKMatrixStackGetMatrix4(self.modelviewMatrixStack);
-        
+    
       [self.baseEffect prepareToDraw];
 
       // Draw triangles using vertices in the prepared vertex
