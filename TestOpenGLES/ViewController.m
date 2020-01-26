@@ -102,7 +102,7 @@ static const GLfloat  SceneDaysPerMoonOrbit = 28.0f;
        1.0,
        1.0,
        120.0);
-    
+
 
     // Position scene with Earth near center of viewing volume
     self.baseEffect.transform.modelviewMatrix =
@@ -112,6 +112,7 @@ static const GLfloat  SceneDaysPerMoonOrbit = 28.0f;
     GLKMatrixStackLoadMatrix4(
        self.modelviewMatrixStack,
        self.baseEffect.transform.modelviewMatrix);
+    
 
 }
 
@@ -126,6 +127,18 @@ static const GLfloat  SceneDaysPerMoonOrbit = 28.0f;
     SceneDaysPerMoonOrbit;
     
     [self.baseEffect prepareToDraw];
+    GLfloat   aspectRatio =
+    (float)((GLKView *)self.view).drawableWidth /
+    (float)((GLKView *)self.view).drawableHeight;
+    self.baseEffect.transform.projectionMatrix =
+    GLKMatrix4MakeFrustum(
+    -1.0 * aspectRatio,
+    1.0 * aspectRatio,
+    -1.0,
+    1.0,
+    1.0,
+    120.0);
+    
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     
     glBindBuffer(GL_ARRAY_BUFFER, vertexBufferID);
@@ -163,7 +176,17 @@ static const GLfloat  SceneDaysPerMoonOrbit = 28.0f;
 // variable that a texture coordinate system scale factor.
 - (IBAction)takeTextureScaleFactorFrom:(UISlider *)aControl
 {
-    
+    GLfloat   aspectRatio =
+    (float)((GLKView *)self.view).drawableWidth /
+    (float)((GLKView *)self.view).drawableHeight;
+    self.baseEffect.transform.projectionMatrix =
+    GLKMatrix4MakeFrustum(
+    -1.0 * aspectRatio,
+    1.0 * aspectRatio,
+    -1.0,
+    1.0,
+    1.0,
+    120.0);
 }
 
 
@@ -173,7 +196,18 @@ static const GLfloat  SceneDaysPerMoonOrbit = 28.0f;
 // variable that a texture coordinate system rotation angle.
 - (IBAction)takeTextureAngleFrom:(UISlider *)aControl
 {
-   
+       GLfloat   aspectRatio =
+              (float)((GLKView *)self.view).drawableWidth /
+              (float)((GLKView *)self.view).drawableHeight;
+         self.baseEffect.transform.projectionMatrix =
+            GLKMatrix4MakeOrtho(
+            -1.0 * aspectRatio,
+            1.0 * aspectRatio,
+            -1.0,
+            1.0,
+            1.0,
+            120.0);
+
 }
 //MARK: private methods
 // Draw the Earth
