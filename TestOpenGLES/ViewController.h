@@ -19,7 +19,8 @@
 }
 
 @property (strong, nonatomic) GLKBaseEffect *baseEffect;
-@property (nonatomic) GLKMatrixStackRef textureMatrixStack;
+@property (nonatomic) GLKMatrixStackRef modelviewMatrixStack;
+@property (nonatomic) GLfloat earthRotationAngleDegrees;
 
 @end
 

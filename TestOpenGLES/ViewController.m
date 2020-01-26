@@ -12,10 +12,15 @@
 
 @implementation ViewController
 
+/////////////////////////////////////////////////////////////////
+// Constants
+static const GLfloat  SceneEarthAxialTiltDeg = 23.5f;
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.textureMatrixStack = GLKMatrixStackCreate(kCFAllocatorDefault);
+    self.modelviewMatrixStack = GLKMatrixStackCreate(kCFAllocatorDefault);
 
     GLKView *view = (GLKView *)self.view;
     NSAssert([view isKindOfClass:[GLKView class]], @"View controller's view is not a GLKView");
@@ -55,7 +60,7 @@
     glEnable(GL_DEPTH_TEST);
     
     self.baseEffect.light0.enabled = GL_TRUE;
-    self.baseEffect.light0.diffuseColor = GLKVector4Make(
+    self.baseEffect.light0.diffuseColor = GLKVector4Make(//漫反射
        1.0f, // Red
        1.0f, // Green
        1.0f, // Blue
@@ -65,16 +70,41 @@
        0.0f,
        0.8f,
        0.0f);
-    self.baseEffect.light0.ambientColor = GLKVector4Make(
+    self.baseEffect.light0.ambientColor = GLKVector4Make(//环境光
        0.2f, // Red
        0.2f, // Green
        0.2f, // Blue
        1.0f);// Alpha
+    
+    // Set a reasonable initial projection
+    self.baseEffect.transform.projectionMatrix =
+       GLKMatrix4MakeOrtho(
+       -1.0 * 4.0 / 3.0,
+       1.0 * 4.0 / 3.0,
+       -1.0,
+       1.0,
+       1.0,
+       120.0);
+
+    // Position scene with Earth near center of viewing volume
+    self.baseEffect.transform.modelviewMatrix =
+       GLKMatrix4MakeTranslation(0.0f, 0.0f, -5.0);
+    
+    // Initialize the matrix stack
+    GLKMatrixStackLoadMatrix4(
+       self.modelviewMatrixStack,
+       self.baseEffect.transform.modelviewMatrix);
+
 }
 
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect {
     //arg4 用于区分颜色， 0 Blue, 1 Green, 2 Purple, 3 Orange, 4 Red
     kdebug_signpost_start(10, 0, 0, 0, 1);
+    
+    // Update the angles every frame to animate
+    // (one day every 60 display updates)
+    self.earthRotationAngleDegrees += 360.0f / 60.0f;
+    
     [self.baseEffect prepareToDraw];
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     
@@ -90,7 +120,7 @@
     glEnableVertexAttribArray(GLKVertexAttribNormal);
     glVertexAttribPointer(GLKVertexAttribNormal, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat)*3, NULL+0);
     
-    glDrawArrays(GL_TRIANGLES, 0, sphereNumVerts);
+    [self drawEarth];
     
     kdebug_signpost_end(10, 0, 0, 0, 1);
 
@@ -123,5 +153,37 @@
 - (IBAction)takeTextureAngleFrom:(UISlider *)aControl
 {
    
+}
+//MARK: private methods
+// Draw the Earth
+- (void)drawEarth
+{
+   self.baseEffect.texture2d0.name = earthTextureInfo.name;
+   self.baseEffect.texture2d0.target = earthTextureInfo.target;
+      
+   GLKMatrixStackPush(self.modelviewMatrixStack);
+   
+      GLKMatrixStackRotate(   // Rotate (tilt Earth's axis)
+         self.modelviewMatrixStack,
+         GLKMathDegreesToRadians(SceneEarthAxialTiltDeg),
+         1.0, 0.0, 0.0);
+      GLKMatrixStackRotate(   // Rotate about Earth's axis
+         self.modelviewMatrixStack,
+         GLKMathDegreesToRadians(self.earthRotationAngleDegrees),
+         0.0, 1.0, 0.0);
+      
+      self.baseEffect.transform.modelviewMatrix =
+         GLKMatrixStackGetMatrix4(self.modelviewMatrixStack);
+        
+      [self.baseEffect prepareToDraw];
+
+      // Draw triangles using vertices in the prepared vertex
+      // buffers
+      glDrawArrays(GL_TRIANGLES, 0, sphereNumVerts);
+         
+   GLKMatrixStackPop(self.modelviewMatrixStack);
+   
+   self.baseEffect.transform.modelviewMatrix =
+         GLKMatrixStackGetMatrix4(self.modelviewMatrixStack);
 }
 @end
