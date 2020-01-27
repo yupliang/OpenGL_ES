@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FD035B8F23DE886800AA9D37 /* SceneMesh.m in Sources */ = {isa = PBXBuildFile; fileRef = FD035B8D23DE886800AA9D37 /* SceneMesh.m */; };
+		FD035B9023DE8C9B00AA9D37 /* AGLKVertexAttribArrayBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = FD1A989023B1932A00873833 /* AGLKVertexAttribArrayBuffer.m */; };
 		FD28011123ACCA7E00B75551 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FD28011023ACCA7E00B75551 /* AppDelegate.m */; };
 		FD28011423ACCA7E00B75551 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FD28011323ACCA7E00B75551 /* SceneDelegate.m */; };
 		FD28011723ACCA7E00B75551 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FD28011623ACCA7E00B75551 /* ViewController.m */; };
@@ -25,6 +27,8 @@
 		FD40901423DD938900FC1E4D /* Moon256x128.png in Resources */ = {isa = PBXBuildFile; fileRef = FD40901323DD938900FC1E4D /* Moon256x128.png */; };
 		FD4A813A23D5ABF7009B11B3 /* AGLKContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FD4A813923D5ABF7009B11B3 /* AGLKContext.m */; };
 		FD734F7423B31C9D002CF664 /* icon_1_3_map.png in Resources */ = {isa = PBXBuildFile; fileRef = FD734F7323B31C9D002CF664 /* icon_1_3_map.png */; };
+		FD7410A623DE876000194940 /* SceneModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FD7410A523DE876000194940 /* SceneModel.m */; };
+		FD7410A923DE881400194940 /* SceneRinkModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FD7410A823DE881400194940 /* SceneRinkModel.m */; };
 		FD76C01223C2C06C00E04D08 /* Earth512x256.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FD76C01123C2C06C00E04D08 /* Earth512x256.jpg */; };
 		FDBC9BF023B33EB900FBBBDC /* beetle.png in Resources */ = {isa = PBXBuildFile; fileRef = FDBC9BEF23B33EB900FBBBDC /* beetle.png */; };
 		FDBC9BF223B3653100FBBBDC /* leaves.gif in Resources */ = {isa = PBXBuildFile; fileRef = FDBC9BF123B3653100FBBBDC /* leaves.gif */; };
@@ -43,6 +47,8 @@
 
 /* Begin PBXFileReference section */
 		FD02381623D4361700E00AD9 /* lowPolyAxesAndModels2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lowPolyAxesAndModels2.h; path = "Learning-OpenGL-ES-for-iOS-master/ch05_EXAMPLES/Resources/lowPolyAxesAndModels2.h"; sourceTree = SOURCE_ROOT; };
+		FD035B8D23DE886800AA9D37 /* SceneMesh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SceneMesh.m; path = "Learning-OpenGL-ES-for-iOS-master/ch06_EXAMPLES/CommonCode/SceneMesh.m"; sourceTree = SOURCE_ROOT; };
+		FD035B8E23DE886800AA9D37 /* SceneMesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SceneMesh.h; path = "Learning-OpenGL-ES-for-iOS-master/ch06_EXAMPLES/CommonCode/SceneMesh.h"; sourceTree = SOURCE_ROOT; };
 		FD1A988F23B1932A00873833 /* AGLKVertexAttribArrayBuffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AGLKVertexAttribArrayBuffer.h; sourceTree = "<group>"; };
 		FD1A989023B1932A00873833 /* AGLKVertexAttribArrayBuffer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AGLKVertexAttribArrayBuffer.m; sourceTree = "<group>"; };
 		FD28010C23ACCA7E00B75551 /* TestOpenGLES.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestOpenGLES.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -71,6 +77,10 @@
 		FD4A813823D5ABF7009B11B3 /* AGLKContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AGLKContext.h; path = "Learning-OpenGL-ES-for-iOS-master/AGLKit/AGLKContext.h"; sourceTree = SOURCE_ROOT; };
 		FD4A813923D5ABF7009B11B3 /* AGLKContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AGLKContext.m; path = "Learning-OpenGL-ES-for-iOS-master/AGLKit/AGLKContext.m"; sourceTree = SOURCE_ROOT; };
 		FD734F7323B31C9D002CF664 /* icon_1_3_map.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_1_3_map.png; sourceTree = "<group>"; };
+		FD7410A423DE876000194940 /* SceneModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SceneModel.h; path = "Learning-OpenGL-ES-for-iOS-master/ch06_EXAMPLES/CommonCode/SceneModel.h"; sourceTree = SOURCE_ROOT; };
+		FD7410A523DE876000194940 /* SceneModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SceneModel.m; path = "Learning-OpenGL-ES-for-iOS-master/ch06_EXAMPLES/CommonCode/SceneModel.m"; sourceTree = SOURCE_ROOT; };
+		FD7410A723DE881400194940 /* SceneRinkModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SceneRinkModel.h; path = "Learning-OpenGL-ES-for-iOS-master/ch06_EXAMPLES/OpenGLES_Ch6_1/OpenGLES_Ch6_1/SceneRinkModel.h"; sourceTree = SOURCE_ROOT; };
+		FD7410A823DE881400194940 /* SceneRinkModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SceneRinkModel.m; path = "Learning-OpenGL-ES-for-iOS-master/ch06_EXAMPLES/OpenGLES_Ch6_1/OpenGLES_Ch6_1/SceneRinkModel.m"; sourceTree = SOURCE_ROOT; };
 		FD76C01123C2C06C00E04D08 /* Earth512x256.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Earth512x256.jpg; sourceTree = "<group>"; };
 		FD7BF51B23D1F69900297A68 /* sphere.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sphere.h; sourceTree = "<group>"; };
 		FDBC9BEF23B33EB900FBBBDC /* beetle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = beetle.png; sourceTree = "<group>"; };
@@ -137,6 +147,12 @@
 				FD28011323ACCA7E00B75551 /* SceneDelegate.m */,
 				FD28011523ACCA7E00B75551 /* ViewController.h */,
 				FD28011623ACCA7E00B75551 /* ViewController.m */,
+				FD035B8E23DE886800AA9D37 /* SceneMesh.h */,
+				FD035B8D23DE886800AA9D37 /* SceneMesh.m */,
+				FD7410A723DE881400194940 /* SceneRinkModel.h */,
+				FD7410A823DE881400194940 /* SceneRinkModel.m */,
+				FD7410A423DE876000194940 /* SceneModel.h */,
+				FD7410A523DE876000194940 /* SceneModel.m */,
 				FD28011823ACCA7E00B75551 /* Main.storyboard */,
 				FD28011B23ACCA8100B75551 /* Assets.xcassets */,
 				FD28011D23ACCA8100B75551 /* LaunchScreen.storyboard */,
@@ -282,11 +298,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FD035B9023DE8C9B00AA9D37 /* AGLKVertexAttribArrayBuffer.m in Sources */,
 				FD4A813A23D5ABF7009B11B3 /* AGLKContext.m in Sources */,
 				FDCA49B723D6AF9E00FD3EC2 /* AGLKTextureTransformBaseEffect.m in Sources */,
+				FD7410A623DE876000194940 /* SceneModel.m in Sources */,
 				FD28011723ACCA7E00B75551 /* ViewController.m in Sources */,
 				FD28011123ACCA7E00B75551 /* AppDelegate.m in Sources */,
+				FD035B8F23DE886800AA9D37 /* SceneMesh.m in Sources */,
 				FD28012223ACCA8100B75551 /* main.m in Sources */,
+				FD7410A923DE881400194940 /* SceneRinkModel.m in Sources */,
 				FD28011423ACCA7E00B75551 /* SceneDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -8,7 +8,7 @@
 
 #import "ViewController.h"
 #import <sys/kdebug_signpost.h>
-#import "sphere.h"
+#import "SceneRinkModel.h"
 
 @implementation ViewController
 
@@ -26,12 +26,9 @@
     glGenBuffers(1, &vertexBufferID);
     glBindBuffer(GL_ARRAY_BUFFER, vertexBufferID);
     
+    self.rinkModel = [[SceneRinkModel alloc] init];
     
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    
-        
-    
-    
     glEnable(GL_DEPTH_TEST);
     
     self.baseEffect.light0.enabled = GL_TRUE;
