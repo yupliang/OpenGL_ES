@@ -12,6 +12,9 @@
 
 @implementation ViewController
 
+@synthesize eyePosition;
+@synthesize lookAtPosition;
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -22,51 +25,65 @@
     [EAGLContext setCurrentContext:view.context];
     
     self.baseEffect = [[GLKBaseEffect alloc] init];
-    
-    glGenBuffers(1, &vertexBufferID);
-    glBindBuffer(GL_ARRAY_BUFFER, vertexBufferID);
-    
     self.rinkModel = [[SceneRinkModel alloc] init];
     
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
     glEnable(GL_DEPTH_TEST);
     
+    // Set initial point of view to reasonable arbitrary values
+    // These values make most of the simulated rink visible
+    self.eyePosition = GLKVector3Make(10.5, 5.0, 0.0);
+    self.lookAtPosition = GLKVector3Make(0.0, 0.5, 0.0);
+    
+    // Configure a light
     self.baseEffect.light0.enabled = GL_TRUE;
-    self.baseEffect.light0.diffuseColor = GLKVector4Make(//漫反射
-       1.0f, // Red
-       1.0f, // Green
-       1.0f, // Blue
+    self.baseEffect.light0.ambientColor = GLKVector4Make(
+       0.6f, // Red
+       0.6f, // Green
+       0.6f, // Blue
        1.0f);// Alpha
     self.baseEffect.light0.position = GLKVector4Make(
        1.0f,
-       0.0f,
        0.8f,
+       0.4f,
        0.0f);
-    self.baseEffect.light0.ambientColor = GLKVector4Make(//环境光
-       0.2f, // Red
-       0.2f, // Green
-       0.2f, // Blue
-       1.0f);// Alpha
-    
-    
-    
-
 }
 
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect {
     //arg4 用于区分颜色， 0 Blue, 1 Green, 2 Purple, 3 Orange, 4 Red
     kdebug_signpost_start(10, 0, 0, 0, 1);
-    
-    [self.baseEffect prepareToDraw];
-
-    
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     
+    // Calculate the aspect ratio for the scene and setup a
+    // perspective projection
+    const GLfloat  aspectRatio =
+       (GLfloat)view.drawableWidth / (GLfloat)view.drawableHeight;
+
+    self.baseEffect.transform.projectionMatrix =
+       GLKMatrix4MakePerspective(
+          GLKMathDegreesToRadians(35.0f),// Standard field of view
+          aspectRatio,
+          0.1f,   // Don't make near plane too close
+          25.0f); // Far is aritrarily far enough to contain scene
+    // Set the modelview matrix to match current eye and look-at
+    // positions
+    self.baseEffect.transform.modelviewMatrix =
+       GLKMatrix4MakeLookAt(
+          self.eyePosition.x,
+          self.eyePosition.y,
+          self.eyePosition.z,
+          self.lookAtPosition.x,
+          self.lookAtPosition.y,
+          self.lookAtPosition.z,
+          0, 1, 0);
+    
+    [self.baseEffect prepareToDraw];
+    //draw the rink
     [self.rinkModel draw];
     
     kdebug_signpost_end(10, 0, 0, 0, 1);
 
-//    #ifdef DEBUG
+    #ifdef DEBUG
        {  // Report any errors
           GLenum error = glGetError();
           if(GL_NO_ERROR != error)
@@ -74,7 +91,7 @@
              NSLog(@"GL Erroraa: 0x%x", error);
           }
        }
-//    #endif
+    #endif
 }
 
 //MARK: actions

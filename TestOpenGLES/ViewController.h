@@ -18,6 +18,7 @@
 
 @property (strong, nonatomic) GLKBaseEffect *baseEffect;
 @property (strong, nonatomic) SceneModel *rinkModel;
-
+@property (nonatomic, assign) GLKVector3 eyePosition;
+@property (nonatomic, assign) GLKVector3 lookAtPosition;
 @end
 
