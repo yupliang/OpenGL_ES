@@ -12,21 +12,9 @@
 
 @implementation ViewController
 
-@synthesize moonRotationAngleDegrees;
-
-/////////////////////////////////////////////////////////////////
-//MARK: Constants
-static const GLfloat  SceneEarthAxialTiltDeg = 23.5f;
-static const GLfloat  SceneMoonDistanceFromEarth = 3.0;
-static const GLfloat  SceneMoonRadiusFractionOfEarth = 0.25;
-static const GLfloat  SceneDaysPerMoonOrbit = 28.0f;
-
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.modelviewMatrixStack = GLKMatrixStackCreate(kCFAllocatorDefault);
-
     GLKView *view = (GLKView *)self.view;
     NSAssert([view isKindOfClass:[GLKView class]], @"View controller's view is not a GLKView");
     view.drawableDepthFormat = GLKViewDrawableDepthFormat16;
@@ -37,43 +25,13 @@ static const GLfloat  SceneDaysPerMoonOrbit = 28.0f;
     
     glGenBuffers(1, &vertexBufferID);
     glBindBuffer(GL_ARRAY_BUFFER, vertexBufferID);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(sphereVerts), sphereVerts, GL_STATIC_DRAW);
     
-    glGenBuffers(1, &earthTextureBufferID);
-    glBindBuffer(GL_ARRAY_BUFFER, earthTextureBufferID);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(sphereTexCoords), sphereTexCoords, GL_STATIC_DRAW);
-    
-    glGenBuffers(1, &earthNormalBufferID);
-    glBindBuffer(GL_ARRAY_BUFFER, earthNormalBufferID);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(sphereNormals), sphereNormals, GL_STATIC_DRAW);
     
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     
-    // Setup Earth texture
-    CGImageRef earthImageRef =
-       [[UIImage imageNamed:@"Earth512x256.jpg"] CGImage];
-       
-    earthTextureInfo = [GLKTextureLoader
-       textureWithCGImage:earthImageRef
-       options:[NSDictionary dictionaryWithObjectsAndKeys:
-          [NSNumber numberWithBool:YES],
-          GLKTextureLoaderOriginBottomLeft, nil]
-       error:NULL];
+        
     
-    // Setup Moon texture
-    CGImageRef moonImageRef =
-       [[UIImage imageNamed:@"Moon256x128.png"] CGImage];
-       
-    moonTextureInfo = [GLKTextureLoader
-       textureWithCGImage:moonImageRef
-       options:[NSDictionary dictionaryWithObjectsAndKeys:
-          [NSNumber numberWithBool:YES],
-          GLKTextureLoaderOriginBottomLeft, nil]
-       error:NULL];
     
-    self.baseEffect.texture2d0.enabled = true;
-    self.baseEffect.texture2d0.target = earthTextureInfo.target;
-    self.baseEffect.texture2d0.name = earthTextureInfo.name;
     glEnable(GL_DEPTH_TEST);
     
     self.baseEffect.light0.enabled = GL_TRUE;
@@ -93,25 +51,7 @@ static const GLfloat  SceneDaysPerMoonOrbit = 28.0f;
        0.2f, // Blue
        1.0f);// Alpha
     
-    // Set a reasonable initial projection
-    self.baseEffect.transform.projectionMatrix =
-       GLKMatrix4MakeOrtho(
-       -1.0 * 4.0 / 3.0,
-       1.0 * 4.0 / 3.0,
-       -1.0,
-       1.0,
-       1.0,
-       120.0);
-
-
-    // Position scene with Earth near center of viewing volume
-    self.baseEffect.transform.modelviewMatrix =
-       GLKMatrix4MakeTranslation(0.0f, 0.0f, -5.0);
     
-    // Initialize the matrix stack
-    GLKMatrixStackLoadMatrix4(
-       self.modelviewMatrixStack,
-       self.baseEffect.transform.modelviewMatrix);
     
 
 }
@@ -120,42 +60,10 @@ static const GLfloat  SceneDaysPerMoonOrbit = 28.0f;
     //arg4 用于区分颜色， 0 Blue, 1 Green, 2 Purple, 3 Orange, 4 Red
     kdebug_signpost_start(10, 0, 0, 0, 1);
     
-    // Update the angles every frame to animate
-    // (one day every 60 display updates)
-    self.earthRotationAngleDegrees += 360.0f / 60.0f;
-    self.moonRotationAngleDegrees += (360.0f / 60.0f) /
-    SceneDaysPerMoonOrbit;
-    
     [self.baseEffect prepareToDraw];
-    GLfloat   aspectRatio =
-    (float)((GLKView *)self.view).drawableWidth /
-    (float)((GLKView *)self.view).drawableHeight;
-    self.baseEffect.transform.projectionMatrix =
-    GLKMatrix4MakeFrustum(
-    -1.0 * aspectRatio,
-    1.0 * aspectRatio,
-    -1.0,
-    1.0,
-    1.0,
-    120.0);
+
     
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-    
-    glBindBuffer(GL_ARRAY_BUFFER, vertexBufferID);
-    glEnableVertexAttribArray(GLKVertexAttribPosition);
-    glVertexAttribPointer(GLKVertexAttribPosition, 3, GL_FLOAT, GL_FALSE, sizeof(GL_FLOAT)*3, NULL+0);
-    
-    glBindBuffer(GL_ARRAY_BUFFER, earthTextureBufferID);
-    glEnableVertexAttribArray(GLKVertexAttribTexCoord0);
-    glVertexAttribPointer(GLKVertexAttribTexCoord0, 2, GL_FLOAT, GL_FALSE, sizeof(GLfloat)*2, NULL+0);
-    
-    glBindBuffer(GL_ARRAY_BUFFER, earthNormalBufferID);
-    glEnableVertexAttribArray(GLKVertexAttribNormal);
-    glVertexAttribPointer(GLKVertexAttribNormal, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat)*3, NULL+0);
-    
-    [self drawEarth];
-    [self drawMoon];
-    
     kdebug_signpost_end(10, 0, 0, 0, 1);
 
 //    #ifdef DEBUG
@@ -176,17 +84,6 @@ static const GLfloat  SceneDaysPerMoonOrbit = 28.0f;
 // variable that a texture coordinate system scale factor.
 - (IBAction)takeTextureScaleFactorFrom:(UISlider *)aControl
 {
-    GLfloat   aspectRatio =
-    (float)((GLKView *)self.view).drawableWidth /
-    (float)((GLKView *)self.view).drawableHeight;
-    self.baseEffect.transform.projectionMatrix =
-    GLKMatrix4MakeFrustum(
-    -1.0 * aspectRatio,
-    1.0 * aspectRatio,
-    -1.0,
-    1.0,
-    1.0,
-    120.0);
 }
 
 
@@ -196,89 +93,10 @@ static const GLfloat  SceneDaysPerMoonOrbit = 28.0f;
 // variable that a texture coordinate system rotation angle.
 - (IBAction)takeTextureAngleFrom:(UISlider *)aControl
 {
-       GLfloat   aspectRatio =
-              (float)((GLKView *)self.view).drawableWidth /
-              (float)((GLKView *)self.view).drawableHeight;
-         self.baseEffect.transform.projectionMatrix =
-            GLKMatrix4MakeOrtho(
-            -1.0 * aspectRatio,
-            1.0 * aspectRatio,
-            -1.0,
-            1.0,
-            1.0,
-            120.0);
 
 }
 //MARK: private methods
-// Draw the Earth
-- (void)drawEarth
-{
-   self.baseEffect.texture2d0.name = earthTextureInfo.name;
-   self.baseEffect.texture2d0.target = earthTextureInfo.target;
-      
-   GLKMatrixStackPush(self.modelviewMatrixStack);
-   
-      GLKMatrixStackRotate(   // Rotate (tilt Earth's axis)
-         self.modelviewMatrixStack,
-         GLKMathDegreesToRadians(SceneEarthAxialTiltDeg),
-         0.0, 0.0, 1.0);
-      GLKMatrixStackRotate(   // Rotate about Earth's axis
-         self.modelviewMatrixStack,
-         GLKMathDegreesToRadians(self.earthRotationAngleDegrees),
-         0.0, 1.0, 0.0);
-      
-      self.baseEffect.transform.modelviewMatrix =
-         GLKMatrixStackGetMatrix4(self.modelviewMatrixStack);
-    
-      [self.baseEffect prepareToDraw];
 
-      // Draw triangles using vertices in the prepared vertex
-      // buffers
-      glDrawArrays(GL_TRIANGLES, 0, sphereNumVerts);
-         
-   GLKMatrixStackPop(self.modelviewMatrixStack);
-   
-   self.baseEffect.transform.modelviewMatrix =
-         GLKMatrixStackGetMatrix4(self.modelviewMatrixStack);
-}
 
-// Draw the Moon
-- (void)drawMoon
-{
-   self.baseEffect.texture2d0.name = moonTextureInfo.name;
-   self.baseEffect.texture2d0.target = moonTextureInfo.target;
 
-   GLKMatrixStackPush(self.modelviewMatrixStack);
-
-      GLKMatrixStackRotate(   // Rotate to position in orbit
-         self.modelviewMatrixStack,
-         GLKMathDegreesToRadians(self.moonRotationAngleDegrees),
-         0.0, 1.0, 0.0);
-      GLKMatrixStackTranslate(// Translate to distance from Earth
-         self.modelviewMatrixStack,
-         0.0, 0.0, SceneMoonDistanceFromEarth);
-      GLKMatrixStackScale(    // Scale to size of Moon
-         self.modelviewMatrixStack,
-         SceneMoonRadiusFractionOfEarth,
-         SceneMoonRadiusFractionOfEarth,
-         SceneMoonRadiusFractionOfEarth);
-      GLKMatrixStackRotate(   // Rotate Moon on its own axis
-         self.modelviewMatrixStack,
-         GLKMathDegreesToRadians(moonRotationAngleDegrees),
-         0.0, 1.0, 0.0);
-
-      self.baseEffect.transform.modelviewMatrix =
-         GLKMatrixStackGetMatrix4(self.modelviewMatrixStack);
-
-      [self.baseEffect prepareToDraw];
-
-      // Draw triangles using vertices in the prepared vertex
-      // buffers
-    glDrawArrays(GL_TRIANGLES, 0, sphereNumVerts);
-
-   GLKMatrixStackPop(self.modelviewMatrixStack);
-
-   self.baseEffect.transform.modelviewMatrix =
-         GLKMatrixStackGetMatrix4(self.modelviewMatrixStack);
-}
 @end
