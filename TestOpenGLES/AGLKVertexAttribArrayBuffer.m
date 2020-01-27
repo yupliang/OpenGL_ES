@@ -13,12 +13,15 @@
 @property (nonatomic, assign) GLsizeiptr
    bufferSizeBytes;
 
-@property (nonatomic, assign) GLsizeiptr
-   stride;
+@property (nonatomic, assign) GLsizeiptr stride;
 
 @end
 
 @implementation AGLKVertexAttribArrayBuffer
+
+@synthesize name;
+@synthesize bufferSizeBytes;
+@synthesize stride;
 
 /////////////////////////////////////////////////////////////////
 // This method creates a vertex attribute array buffer in
@@ -66,7 +69,7 @@
    shouldEnable:(BOOL)shouldEnable
 {
    NSParameterAssert((0 < count) && (count < 4));
-   NSParameterAssert(offset < self.stride);
+   NSAssert(offset < self.stride, @"(%d,%d)",offset,self.stride);
    NSAssert(0 != name, @"Invalid name");
 
    glBindBuffer(GL_ARRAY_BUFFER,     // STEP 2
@@ -95,13 +98,6 @@
       }
    }
 #endif
-}
-
-- (void)preparetoDrawWithAttrib:(GLuint)index
-            numberOfCoordinates:(GLint)count
-                   attribOffset:(GLsizeiptr)offset
-                   shouldEnable:(BOOL)shouldEnable {
-    glVertexAttribPointer(index,count,GL_FLOAT,GL_FALSE,stride,NULL+offset);
 }
 
 - (id)initWithAttriStride:(GLsizeiptr)aStride
