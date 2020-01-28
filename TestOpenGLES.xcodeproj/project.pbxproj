@@ -18,6 +18,8 @@
 		FD28012223ACCA8100B75551 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FD28012123ACCA8100B75551 /* main.m */; };
 		FD28012C23ACCA8100B75551 /* TestOpenGLESUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = FD28012B23ACCA8100B75551 /* TestOpenGLESUITests.m */; };
 		FD28013723B0D29900B75551 /* Common_Icon_Insightflower.png in Resources */ = {isa = PBXBuildFile; fileRef = FD28013623B0D29900B75551 /* Common_Icon_Insightflower.png */; };
+		FD360F5C23E02EF800F13B2A /* SceneCarModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FD360F5B23E02EF800F13B2A /* SceneCarModel.m */; };
+		FD360F5F23E02F6700F13B2A /* SceneCar.m in Sources */ = {isa = PBXBuildFile; fileRef = FD360F5D23E02F6700F13B2A /* SceneCar.m */; };
 		FD3CD6EA23DAA46A00EC3303 /* AGLKPointParticleShader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = FD3CD6E423DAA46A00EC3303 /* AGLKPointParticleShader.fsh */; };
 		FD3CD6EB23DAA46A00EC3303 /* AGLKTextureMatrix2PointLightShader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = FD3CD6E523DAA46A00EC3303 /* AGLKTextureMatrix2PointLightShader.vsh */; };
 		FD3CD6EC23DAA46A00EC3303 /* AGLKSkyboxShader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = FD3CD6E623DAA46A00EC3303 /* AGLKSkyboxShader.fsh */; };
@@ -67,6 +69,11 @@
 		FD28012B23ACCA8100B75551 /* TestOpenGLESUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestOpenGLESUITests.m; sourceTree = "<group>"; };
 		FD28012D23ACCA8100B75551 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FD28013623B0D29900B75551 /* Common_Icon_Insightflower.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Common_Icon_Insightflower.png; sourceTree = "<group>"; };
+		FD360F5923E0296300F13B2A /* bumperRink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = bumperRink.h; path = "Learning-OpenGL-ES-for-iOS-master/ch06_EXAMPLES/Resources/bumperRink.h"; sourceTree = SOURCE_ROOT; };
+		FD360F5A23E02EF800F13B2A /* SceneCarModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SceneCarModel.h; path = "Learning-OpenGL-ES-for-iOS-master/ch06_EXAMPLES/OpenGLES_Ch6_1/OpenGLES_Ch6_1/SceneCarModel.h"; sourceTree = SOURCE_ROOT; };
+		FD360F5B23E02EF800F13B2A /* SceneCarModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SceneCarModel.m; path = "Learning-OpenGL-ES-for-iOS-master/ch06_EXAMPLES/OpenGLES_Ch6_1/OpenGLES_Ch6_1/SceneCarModel.m"; sourceTree = SOURCE_ROOT; };
+		FD360F5D23E02F6700F13B2A /* SceneCar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SceneCar.m; path = "Learning-OpenGL-ES-for-iOS-master/ch06_EXAMPLES/OpenGLES_Ch6_1/OpenGLES_Ch6_1/SceneCar.m"; sourceTree = SOURCE_ROOT; };
+		FD360F5E23E02F6700F13B2A /* SceneCar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SceneCar.h; path = "Learning-OpenGL-ES-for-iOS-master/ch06_EXAMPLES/OpenGLES_Ch6_1/OpenGLES_Ch6_1/SceneCar.h"; sourceTree = SOURCE_ROOT; };
 		FD3CD6E423DAA46A00EC3303 /* AGLKPointParticleShader.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = AGLKPointParticleShader.fsh; sourceTree = "<group>"; };
 		FD3CD6E523DAA46A00EC3303 /* AGLKTextureMatrix2PointLightShader.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = AGLKTextureMatrix2PointLightShader.vsh; sourceTree = "<group>"; };
 		FD3CD6E623DAA46A00EC3303 /* AGLKSkyboxShader.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = AGLKSkyboxShader.fsh; sourceTree = "<group>"; };
@@ -131,6 +138,7 @@
 				FD3CD6E323DAA46A00EC3303 /* Shaders */,
 				FDCA49B523D6AF9D00FD3EC2 /* AGLKTextureTransformBaseEffect.h */,
 				FDCA49B623D6AF9D00FD3EC2 /* AGLKTextureTransformBaseEffect.m */,
+				FD360F5923E0296300F13B2A /* bumperRink.h */,
 				FD40901323DD938900FC1E4D /* Moon256x128.png */,
 				FD4A813823D5ABF7009B11B3 /* AGLKContext.h */,
 				FD4A813923D5ABF7009B11B3 /* AGLKContext.m */,
@@ -149,8 +157,12 @@
 				FD28011623ACCA7E00B75551 /* ViewController.m */,
 				FD035B8E23DE886800AA9D37 /* SceneMesh.h */,
 				FD035B8D23DE886800AA9D37 /* SceneMesh.m */,
+				FD360F5E23E02F6700F13B2A /* SceneCar.h */,
+				FD360F5D23E02F6700F13B2A /* SceneCar.m */,
 				FD7410A723DE881400194940 /* SceneRinkModel.h */,
 				FD7410A823DE881400194940 /* SceneRinkModel.m */,
+				FD360F5A23E02EF800F13B2A /* SceneCarModel.h */,
+				FD360F5B23E02EF800F13B2A /* SceneCarModel.m */,
 				FD7410A423DE876000194940 /* SceneModel.h */,
 				FD7410A523DE876000194940 /* SceneModel.m */,
 				FD28011823ACCA7E00B75551 /* Main.storyboard */,
@@ -299,10 +311,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				FD035B9023DE8C9B00AA9D37 /* AGLKVertexAttribArrayBuffer.m in Sources */,
+				FD360F5F23E02F6700F13B2A /* SceneCar.m in Sources */,
 				FD4A813A23D5ABF7009B11B3 /* AGLKContext.m in Sources */,
 				FDCA49B723D6AF9E00FD3EC2 /* AGLKTextureTransformBaseEffect.m in Sources */,
 				FD7410A623DE876000194940 /* SceneModel.m in Sources */,
 				FD28011723ACCA7E00B75551 /* ViewController.m in Sources */,
+				FD360F5C23E02EF800F13B2A /* SceneCarModel.m in Sources */,
 				FD28011123ACCA7E00B75551 /* AppDelegate.m in Sources */,
 				FD035B8F23DE886800AA9D37 /* SceneMesh.m in Sources */,
 				FD28012223ACCA8100B75551 /* main.m in Sources */,

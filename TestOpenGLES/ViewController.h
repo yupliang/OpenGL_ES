@@ -20,5 +20,8 @@
 @property (strong, nonatomic) SceneModel *rinkModel;
 @property (nonatomic, assign) GLKVector3 eyePosition;
 @property (nonatomic, assign) GLKVector3 lookAtPosition;
+@property (readonly, nonatomic, assign) SceneAxisAllignedBoundingBox rinkBoundingBox;
+@property (readonly, nonatomic, strong) NSArray *cars;
+
 @end
 
